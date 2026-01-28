@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// MSP Organization
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logo        String?
+  primaryColor String  @default("#2563eb")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  templates   OnboardingTemplate[]
+  projects    OnboardingProject[]
+}
+
+// MSP Team Members
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String
+  password       String
+  role           String   @default("member") // admin, member
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  organizationId String
+
+  organization    Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedProjects OnboardingProject[] @relation("ProjectOwners")
+  assignedTasks   InternalTask[]
+  activityLogs    ActivityLog[]
+}
+
+// Reusable Onboarding Templates
+model OnboardingTemplate {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  type           String   @default("new_client") // new_client, takeover, offboarding, new_site
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  organizationId String
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sections     TemplateSection[]
+  projects     OnboardingProject[]
+}
+
+// Sections within Templates
+model TemplateSection {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  icon        String   @default("folder")
+  order       Int
+  isRequired  Boolean  @default(true)
+  templateId  String
+
+  template OnboardingTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  fields   SectionField[]
+}
+
+// Fields within Sections
+model SectionField {
+  id           String   @id @default(cuid())
+  label        String
+  description  String?
+  type         String   @default("text") // text, textarea, email, phone, url, select, multiselect, file, credential
+  options      String?  // JSON string for select options
+  placeholder  String?
+  isRequired   Boolean  @default(false)
+  order        Int
+  sectionId    String
+
+  section TemplateSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+// Active Onboarding Projects
+model OnboardingProject {
+  id              String   @id @default(cuid())
+  clientName      String
+  clientEmail     String?
+  clientPhone     String?
+  accessToken     String   @unique @default(cuid()) // For client portal access
+  status          String   @default("draft") // draft, sent, in_progress, completed, archived
+  completionPercent Int    @default(0)
+  sentAt          DateTime?
+  completedAt     DateTime?
+  lastClientActivity DateTime?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  templateId      String
+  organizationId  String
+
+  template     OnboardingTemplate @relation(fields: [templateId], references: [id])
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  owners       User[]             @relation("ProjectOwners")
+  sections     ProjectSection[]
+  credentials  Credential[]
+  tasks        InternalTask[]
+  activities   ActivityLog[]
+}
+
+// Section instances for Projects (copied from template)
+model ProjectSection {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  icon        String   @default("folder")
+  order       Int
+  isRequired  Boolean  @default(true)
+  status      String   @default("pending") // pending, in_progress, completed, not_applicable
+  projectId   String
+
+  project   OnboardingProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  responses FieldResponse[]
+}
+
+// Client Responses to Fields
+model FieldResponse {
+  id          String   @id @default(cuid())
+  fieldLabel  String
+  fieldType   String
+  value       String?
+  fileUrl     String?
+  isRequired  Boolean  @default(false)
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sectionId   String
+
+  section ProjectSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+// Secure Credential Items
+model Credential {
+  id           String   @id @default(cuid())
+  systemName   String   // e.g., "Microsoft 365 Global Admin"
+  systemType   String?  // e.g., "email", "network", "application"
+  username     String?
+  secureLink   String?  // Bitwarden Send, 1Password link, etc.
+  encryptedSecret String? // For one-time secrets
+  secretViewed Boolean  @default(false)
+  secretViewedAt DateTime?
+  notes        String?
+  status       String   @default("pending") // pending, received, verified
+  receivedAt   DateTime?
+  projectId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  project OnboardingProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// MSP Internal Checklist Tasks
+model InternalTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("pending") // pending, in_progress, completed
+  order       Int
+  dueDate     DateTime?
+  completedAt DateTime?
+  projectId   String
+  assigneeId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project  OnboardingProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee User?             @relation(fields: [assigneeId], references: [id])
+}
+
+// Activity / Audit Log
+model ActivityLog {
+  id          String   @id @default(cuid())
+  action      String   // created, updated, viewed, exported, etc.
+  entityType  String   // project, section, credential, task
+  entityId    String
+  details     String?  // JSON string with additional details
+  ipAddress   String?
+  userAgent   String?
+  isClientAction Boolean @default(false)
+  createdAt   DateTime @default(now())
+  projectId   String?
+  userId      String?
+
+  project OnboardingProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User?              @relation(fields: [userId], references: [id])
+}
