@@ -71,7 +71,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 h-12 w-12 rounded-lg bg-blue-600 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white">H</span>
+            <span className="text-2xl font-bold text-white">R</span>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>Start streamlining your client onboarding</CardDescription>
