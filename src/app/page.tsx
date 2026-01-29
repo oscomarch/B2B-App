@@ -20,9 +20,9 @@ export default async function HomePage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <span className="text-lg font-bold text-white">H</span>
+                <span className="text-lg font-bold text-white">R</span>
               </div>
-              <span className="text-xl font-semibold text-gray-900">Handoff</span>
+              <span className="text-xl font-semibold text-gray-900">Relay</span>
             </div>
             <div className="flex items-center gap-4">
               <Link href="/login">
@@ -46,7 +46,7 @@ export default async function HomePage() {
               <span className="text-blue-600">Collect everything.</span>
             </h1>
             <p className="mt-6 text-xl text-gray-600">
-              Handoff replaces spreadsheets, PDFs, and email chaos with a single,
+              Relay replaces spreadsheets, PDFs, and email chaos with a single,
               structured onboarding portal for your MSP clients.
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
@@ -169,7 +169,7 @@ export default async function HomePage() {
             </h2>
             <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
               Join MSPs who have already simplified their client onboarding process
-              with Handoff.
+              with Relay.
             </p>
             <Link href="/register">
               <Button size="lg" variant="secondary" className="gap-2">
@@ -187,9 +187,9 @@ export default async function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <span className="text-lg font-bold text-white">H</span>
+                <span className="text-lg font-bold text-white">R</span>
               </div>
-              <span className="text-xl font-semibold text-gray-900">Handoff</span>
+              <span className="text-xl font-semibold text-gray-900">Relay</span>
             </div>
             <p className="text-gray-500 text-sm">
               Built for MSPs, by MSPs.

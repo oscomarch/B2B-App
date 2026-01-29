@@ -3,7 +3,7 @@ import "./globals.css"
 import { AuthProvider } from "@/components/providers/session-provider"
 
 export const metadata: Metadata = {
-  title: "Handoff - MSP Client Onboarding",
+  title: "Relay - MSP Client Onboarding",
   description: "Centralized and secure client onboarding for Managed Service Providers",
 }
 

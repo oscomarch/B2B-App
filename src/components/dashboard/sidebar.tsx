@@ -41,9 +41,9 @@ export function DashboardSidebar({ user }: SidebarProps) {
           {/* Logo */}
           <div className="flex h-16 shrink-0 items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <span className="text-lg font-bold text-white">H</span>
+              <span className="text-lg font-bold text-white">R</span>
             </div>
-            <span className="text-xl font-semibold text-gray-900">Handoff</span>
+            <span className="text-xl font-semibold text-gray-900">Relay</span>
           </div>
 
           {/* Navigation */}
@@ -115,9 +115,9 @@ export function DashboardSidebar({ user }: SidebarProps) {
       <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm lg:hidden">
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <span className="text-lg font-bold text-white">H</span>
+            <span className="text-lg font-bold text-white">R</span>
           </div>
-          <span className="text-xl font-semibold text-gray-900">Handoff</span>
+          <span className="text-xl font-semibold text-gray-900">Relay</span>
         </div>
         <div className="flex-1" />
         <Button

@@ -23,10 +23,10 @@ async function main() {
   const hashedPassword = await bcrypt.hash("password123", 10)
 
   const user = await prisma.user.upsert({
-    where: { email: "demo@handoff.io" },
+    where: { email: "demo@getrelay.eu" },
     update: {},
     create: {
-      email: "demo@handoff.io",
+      email: "demo@getrelay.eu",
       name: "Demo User",
       password: hashedPassword,
       role: "admin",
@@ -216,7 +216,7 @@ async function main() {
   console.log("Project portal URL: /onboard/" + project.accessToken)
 
   console.log("\n--- Demo Credentials ---")
-  console.log("Email: demo@handoff.io")
+  console.log("Email: demo@getrelay.eu")
   console.log("Password: password123")
   console.log("------------------------\n")
 

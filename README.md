@@ -1,8 +1,8 @@
-# Handoff
+# Relay
 
 **Centralized and secure client onboarding for Managed Service Providers (MSPs)**
 
-Handoff replaces spreadsheets, PDFs, and email chaos with a single, structured onboarding portal that MSPs send to new clients to collect all required technical information, credentials, documents, and approvals.
+Relay replaces spreadsheets, PDFs, and email chaos with a single, structured onboarding portal that MSPs send to new clients to collect all required technical information, credentials, documents, and approvals.
 
 ## Features
 
@@ -18,9 +18,11 @@ Handoff replaces spreadsheets, PDFs, and email chaos with a single, structured o
 - **Framework**: Next.js 14 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: SQLite with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: NextAuth.js
 - **UI Components**: Radix UI primitives
+- **Hosting**: Vercel
+- **Database Hosting**: Neon
 
 ## Getting Started
 
@@ -28,13 +30,14 @@ Handoff replaces spreadsheets, PDFs, and email chaos with a single, structured o
 
 - Node.js 18+
 - npm or yarn
+- PostgreSQL database (or Neon account)
 
 ### Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd handoff
+cd relay
 ```
 
 2. Install dependencies:
@@ -47,17 +50,17 @@ npm install
 cp .env.example .env
 ```
 
-4. Initialize the database:
+Required environment variables:
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Secret for NextAuth.js sessions
+- `ENCRYPTION_KEY` - Key for encrypting credentials
+
+4. Push schema to database:
 ```bash
-npx prisma migrate dev
+npx prisma db push
 ```
 
-5. (Optional) Seed demo data:
-```bash
-npm run db:seed
-```
-
-6. Start the development server:
+5. Start the development server:
 ```bash
 npm run dev
 ```
@@ -66,56 +69,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ### Demo Credentials
 
-After running the seed script:
-- **Email**: demo@handoff.io
+- **Email**: demo@getrelay.eu
 - **Password**: password123
-
-## Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router pages
-│   ├── (auth)/            # Authentication pages (login, register)
-│   ├── (dashboard)/       # MSP dashboard pages
-│   ├── api/               # API routes
-│   └── onboard/           # Client-facing portal
-├── components/            # React components
-│   ├── dashboard/         # Dashboard-specific components
-│   ├── portal/           # Client portal components
-│   ├── projects/         # Project management components
-│   ├── providers/        # Context providers
-│   └── ui/               # Reusable UI components
-├── lib/                   # Utility functions and configurations
-└── types/                 # TypeScript type definitions
-```
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run db:push` - Push schema changes to database
-- `npm run db:seed` - Seed database with demo data
-- `npm run db:studio` - Open Prisma Studio
-
-## Key Workflows
-
-### MSP User Workflow
-
-1. Create an onboarding project from a template
-2. Add credential requests for the client
-3. Send the client portal link
-4. Monitor progress and review submitted information
-5. Complete internal checklist tasks
-6. Export data when complete
-
-### Client Workflow
-
-1. Receive onboarding portal link
-2. Complete each section with required information
-3. Provide credentials via secure links
-4. Track progress and save anytime
 
 ## License
 
