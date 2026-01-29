@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Plus, Key, ExternalLink, Eye, EyeOff, CheckCircle, Clock, AlertCircle } from "lucide-react"
+import { Plus, Key, ExternalLink, CheckCircle, Clock, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,7 +25,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { formatDateTime } from "@/lib/utils"
 
 interface Credential {
   id: string
@@ -219,7 +218,6 @@ export function CredentialsList({ projectId, credentials }: CredentialsListProps
           <div className="space-y-3">
             {credentials.map((credential) => {
               const config = statusConfig[credential.status as keyof typeof statusConfig]
-              const StatusIcon = config?.icon || Clock
 
               return (
                 <div

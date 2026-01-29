@@ -1,10 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import {
   CheckCircle,
-  Circle,
   ChevronRight,
   Building,
   Mail,
@@ -18,6 +16,7 @@ import {
   Key,
   AlertCircle,
   Loader2,
+  LucideIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,7 +34,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   building: Building,
   mail: Mail,
   shield: Shield,
@@ -102,7 +101,6 @@ interface ClientPortalProps {
 }
 
 export function ClientPortal({ project: initialProject }: ClientPortalProps) {
-  const router = useRouter()
   const [project, setProject] = useState(initialProject)
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
   const [formData, setFormData] = useState<Record<string, string>>({})
