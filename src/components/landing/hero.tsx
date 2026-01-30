@@ -85,12 +85,12 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative pt-32 pb-16 px-6">
-      <div className="relative z-10 max-w-6xl mx-auto">
+    <section className="relative pt-28 pb-12 px-3 md:px-4">
+      <div className="relative z-10 max-w-[1440px] mx-auto">
         {/* Main hero container with gradient background image */}
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-[32px] min-h-[600px]"
+          className="relative overflow-hidden rounded-[24px] md:rounded-[28px] min-h-[700px]"
         >
           {/* Background image */}
           <div className="absolute inset-0">
@@ -104,14 +104,15 @@ export function Hero() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 px-8 py-16 md:px-14 md:py-20">
-            <div className="grid lg:grid-cols-[1fr,340px] gap-12 items-start">
+          <div className="relative z-10 h-full flex flex-col px-8 py-14 md:px-12 lg:px-16 md:py-16">
+            {/* Main content area */}
+            <div className="flex-1 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-12">
               {/* Left content */}
-              <div className="max-w-xl">
+              <div className="flex-1 max-w-2xl">
                 {/* Kicker */}
                 <p
                   ref={kickerRef}
-                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70 mb-8"
+                  className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60 mb-5"
                 >
                   Secure client onboarding for MSPs
                 </p>
@@ -119,7 +120,7 @@ export function Hero() {
                 {/* Headline */}
                 <h1
                   ref={headlineRef}
-                  className="text-[42px] md:text-[52px] font-medium text-white mb-6 tracking-[-0.02em] leading-[1.08]"
+                  className="text-[36px] md:text-[46px] lg:text-[54px] font-medium text-white mb-5 tracking-[-0.03em] leading-[1.05]"
                 >
                   Meet the client handoff portal for MSPs.
                 </h1>
@@ -127,16 +128,16 @@ export function Hero() {
                 {/* Subheadline */}
                 <p
                   ref={subheadRef}
-                  className="text-[17px] text-white/80 mb-10 leading-[1.6] max-w-lg"
+                  className="text-[15px] md:text-[17px] text-white/70 mb-8 leading-[1.65] max-w-lg"
                 >
                   Relay replaces onboarding spreadsheets + email threads with one secure intake link. Collect access, credentials, and IT discovery details, track what's missing, and hand off cleanly to your team.
                 </p>
 
                 {/* CTA Button */}
-                <div ref={ctaRef} className="mb-8">
+                <div ref={ctaRef}>
                   <a
                     href="/register"
-                    className="group inline-flex items-center gap-3 pl-6 pr-2 py-2 bg-white rounded-full text-[14px] font-medium text-neutral-900 hover:bg-white/90 transition-colors"
+                    className="group inline-flex items-center gap-3 pl-5 pr-1.5 py-1.5 bg-white rounded-full text-[14px] font-medium text-neutral-900 hover:bg-white/90 transition-colors"
                   >
                     Book a demo
                     <span
@@ -147,47 +148,49 @@ export function Hero() {
                     </span>
                   </a>
                 </div>
-
-                {/* Microcopy */}
-                <p
-                  ref={microcopyRef}
-                  className="text-[13px] text-white/60"
-                >
-                  No more "can you resend the DNS login?" · No passwords in email · Clear status for every request
-                </p>
               </div>
 
-              {/* Right card - Onboarding play */}
+              {/* Right card - positioned organically */}
               <div
                 ref={cardRef}
-                className="group bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-5 hidden lg:block hover:bg-white/15 transition-all duration-300"
+                className="lg:mt-20 lg:mr-4 group bg-white/[0.08] backdrop-blur-md rounded-2xl border border-white/15 p-5 lg:w-[300px] flex-shrink-0 hover:bg-white/[0.12] transition-all duration-300"
               >
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-2.5 mb-3">
                   <div
-                    className="h-9 w-9 rounded-lg flex items-center justify-center"
+                    className="h-8 w-8 rounded-lg flex items-center justify-center"
                     style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                   >
-                    <Play className="h-4 w-4 text-white fill-white" />
+                    <Play className="h-3.5 w-3.5 text-white fill-white" />
                   </div>
-                  <span className="text-[12px] font-medium text-white/60 uppercase tracking-wide">Onboarding play</span>
+                  <span className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">Onboarding play</span>
                 </div>
 
-                <h3 className="text-[17px] font-semibold text-white mb-2 tracking-tight">
+                <h3 className="text-[16px] font-semibold text-white mb-1.5 tracking-tight">
                   Take over a new client
                 </h3>
-                <p className="text-[14px] text-white/70 mb-5 leading-relaxed">
+                <p className="text-[13px] text-white/60 mb-4 leading-relaxed">
                   Turn a messy transition into a structured intake your client actually completes.
                 </p>
 
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-white/50 mb-2">
+                <div className="pt-3 border-t border-white/10">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/40 mb-1.5">
                     Happens when
                   </p>
-                  <p className="text-[13px] text-white/70">
+                  <p className="text-[12px] text-white/55">
                     Contract signed · Kickoff done · Cutover scheduled
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* Bottom microcopy */}
+            <div className="mt-auto pt-8">
+              <p
+                ref={microcopyRef}
+                className="text-[12px] text-white/45"
+              >
+                No more "can you resend the DNS login?" · No passwords in email · Clear status for every request
+              </p>
             </div>
           </div>
         </div>
