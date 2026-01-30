@@ -7,7 +7,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowRight } from "lucide-react"
 
 function LoginForm() {
   const router = useRouter()
@@ -44,28 +44,41 @@ function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="text-center">
-        <div className="mx-auto mb-4 h-12 w-12 rounded-lg bg-blue-600 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">R</span>
-        </div>
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to your Relay account</CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+    <div className="w-full max-w-md">
+      {/* Logo */}
+      <div className="text-center mb-10">
+        <Link href="/" className="inline-flex items-center gap-3 mb-8">
+          <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
+            <span className="text-xl font-semibold text-white">R</span>
+          </div>
+          <span className="text-2xl font-medium text-neutral-900">Relay</span>
+        </Link>
+        <h1 className="text-2xl font-medium text-neutral-900 mb-2">
+          Welcome back
+        </h1>
+        <p className="text-neutral-500">
+          Sign in to your account to continue
+        </p>
+      </div>
+
+      {/* Form Card */}
+      <div className="card-elevated p-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {registered && (
-            <div className="p-3 text-sm text-green-600 bg-green-50 rounded-md">
+            <div className="p-4 text-sm text-green-soft bg-green-soft/10 rounded-xl">
               Account created successfully! Please sign in.
             </div>
           )}
           {error && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
+            <div className="p-4 text-sm text-coral-dark bg-coral/10 rounded-xl">
               {error}
             </div>
           )}
+
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-neutral-700">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
@@ -73,10 +86,14 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
             />
           </div>
+
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-sm font-medium text-neutral-700">
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
@@ -84,39 +101,58 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
             />
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading}>
+
+          <Button type="submit" className="w-full h-12 gap-2" disabled={loading}>
             {loading ? "Signing in..." : "Sign in"}
+            {!loading && <ArrowRight className="h-4 w-4" />}
           </Button>
-          <p className="text-sm text-gray-500 text-center">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-blue-600 hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
-      </form>
-    </Card>
+        </form>
+      </div>
+
+      {/* Footer */}
+      <p className="text-center mt-8 text-sm text-neutral-500">
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="text-coral hover:text-coral-dark font-medium transition-colors">
+          Create one
+        </Link>
+      </p>
+    </div>
+  )
+}
+
+function LoadingState() {
+  return (
+    <div className="w-full max-w-md">
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center gap-3 mb-8">
+          <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
+            <span className="text-xl font-semibold text-white">R</span>
+          </div>
+          <span className="text-2xl font-medium text-neutral-900">Relay</span>
+        </div>
+        <h1 className="text-2xl font-medium text-neutral-900 mb-2">
+          Welcome back
+        </h1>
+        <p className="text-neutral-500">Loading...</p>
+      </div>
+      <div className="card-elevated p-8 animate-pulse">
+        <div className="space-y-6">
+          <div className="h-12 bg-neutral-100 rounded-xl" />
+          <div className="h-12 bg-neutral-100 rounded-xl" />
+          <div className="h-12 bg-neutral-200 rounded-xl" />
+        </div>
+      </div>
+    </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Suspense fallback={
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 h-12 w-12 rounded-lg bg-blue-600 flex items-center justify-center">
-              <span className="text-2xl font-bold text-white">R</span>
-            </div>
-            <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>Loading...</CardDescription>
-          </CardHeader>
-        </Card>
-      }>
+    <div className="min-h-screen flex items-center justify-center bg-cream px-6 py-12">
+      <Suspense fallback={<LoadingState />}>
         <LoginForm />
       </Suspense>
     </div>

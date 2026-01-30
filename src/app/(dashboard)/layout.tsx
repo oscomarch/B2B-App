@@ -15,10 +15,10 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cream">
       <DashboardSidebar user={session.user} />
-      <main className="lg:pl-64">
-        <div className="p-6">{children}</div>
+      <main className="lg:pl-72">
+        <div className="p-6 md:p-8 lg:p-10">{children}</div>
       </main>
     </div>
   )

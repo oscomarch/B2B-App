@@ -2,9 +2,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
-import { Plus, FolderKanban, Clock, CheckCircle, AlertCircle } from "lucide-react"
+import { Plus, FolderKanban, Clock, CheckCircle, AlertCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { formatDate } from "@/lib/utils"
@@ -32,11 +31,11 @@ async function getRecentProjects(organizationId: string) {
 }
 
 const statusConfig = {
-  draft: { label: "Draft", variant: "secondary" as const, icon: Clock },
-  sent: { label: "Sent", variant: "info" as const, icon: Clock },
-  in_progress: { label: "In Progress", variant: "warning" as const, icon: AlertCircle },
-  completed: { label: "Completed", variant: "success" as const, icon: CheckCircle },
-  archived: { label: "Archived", variant: "secondary" as const, icon: FolderKanban },
+  draft: { label: "Draft", color: "bg-neutral-100 text-neutral-600", icon: Clock },
+  sent: { label: "Sent", color: "bg-blue-soft/10 text-blue-soft", icon: Clock },
+  in_progress: { label: "In Progress", color: "bg-coral/10 text-coral-dark", icon: AlertCircle },
+  completed: { label: "Completed", color: "bg-green-soft/10 text-green-soft", icon: CheckCircle },
+  archived: { label: "Archived", color: "bg-neutral-100 text-neutral-500", icon: FolderKanban },
 }
 
 export default async function DashboardPage() {
@@ -49,148 +48,141 @@ export default async function DashboardPage() {
   ])
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 mt-1">Welcome back, {session.user.name}</p>
+          <h1 className="text-2xl font-medium text-neutral-900">Dashboard</h1>
+          <p className="text-neutral-500 mt-1">Welcome back, {session.user.name}</p>
         </div>
         <Link href="/projects/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            New Project
+          <Button className="gap-2">
+            <Plus className="h-4 w-4" />
+            New project
           </Button>
         </Link>
       </div>
 
       {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Total Projects</CardDescription>
-            <CardTitle className="text-3xl">{stats.total}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Draft</CardDescription>
-            <CardTitle className="text-3xl text-gray-500">{stats.draft}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>In Progress</CardDescription>
-            <CardTitle className="text-3xl text-yellow-600">{stats.inProgress}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Completed</CardDescription>
-            <CardTitle className="text-3xl text-green-600">{stats.completed}</CardTitle>
-          </CardHeader>
-        </Card>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="card-soft p-6">
+          <p className="text-sm text-neutral-500 mb-1">Total projects</p>
+          <p className="text-3xl font-medium text-neutral-900">{stats.total}</p>
+        </div>
+        <div className="card-soft p-6">
+          <p className="text-sm text-neutral-500 mb-1">Draft</p>
+          <p className="text-3xl font-medium text-neutral-400">{stats.draft}</p>
+        </div>
+        <div className="card-soft p-6">
+          <p className="text-sm text-neutral-500 mb-1">In progress</p>
+          <p className="text-3xl font-medium text-coral">{stats.inProgress}</p>
+        </div>
+        <div className="card-soft p-6">
+          <p className="text-sm text-neutral-500 mb-1">Completed</p>
+          <p className="text-3xl font-medium text-green-soft">{stats.completed}</p>
+        </div>
       </div>
 
       {/* Recent Projects */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Recent Projects</CardTitle>
-              <CardDescription>Your latest onboarding projects</CardDescription>
+      <div className="card-elevated p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-lg font-medium text-neutral-900">Recent projects</h2>
+            <p className="text-sm text-neutral-500">Your latest onboarding projects</p>
+          </div>
+          <Link href="/projects">
+            <Button variant="outline" size="sm" className="gap-2">
+              View all
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
+        </div>
+
+        {recentProjects.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="h-16 w-16 rounded-2xl bg-neutral-100 flex items-center justify-center mx-auto mb-6">
+              <FolderKanban className="h-8 w-8 text-neutral-400" />
             </div>
-            <Link href="/projects">
-              <Button variant="outline" size="sm">View all</Button>
+            <h3 className="text-lg font-medium text-neutral-900 mb-2">No projects yet</h3>
+            <p className="text-neutral-500 mb-6 max-w-sm mx-auto">
+              Get started by creating your first onboarding project.
+            </p>
+            <Link href="/projects/new">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Create project
+              </Button>
             </Link>
           </div>
-        </CardHeader>
-        <CardContent>
-          {recentProjects.length === 0 ? (
-            <div className="text-center py-12">
-              <FolderKanban className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
-              <p className="text-gray-500 mb-4">Get started by creating your first onboarding project.</p>
-              <Link href="/projects/new">
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Project
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {recentProjects.map((project) => {
-                const config = statusConfig[project.status as keyof typeof statusConfig]
-                return (
-                  <Link
-                    key={project.id}
-                    href={`/projects/${project.id}`}
-                    className="block"
-                  >
-                    <div className="flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition-colors">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h3 className="font-medium text-gray-900 truncate">
-                            {project.clientName}
-                          </h3>
-                          <Badge variant={config.variant}>{config.label}</Badge>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                          {project.template.name} • Updated {formatDate(project.updatedAt)}
-                        </p>
+        ) : (
+          <div className="space-y-3">
+            {recentProjects.map((project) => {
+              const config = statusConfig[project.status as keyof typeof statusConfig]
+              return (
+                <Link
+                  key={project.id}
+                  href={`/projects/${project.id}`}
+                  className="block"
+                >
+                  <div className="flex items-center justify-between p-5 rounded-xl border border-neutral-200/60 hover:border-coral/30 hover:bg-coral/5 transition-all duration-200">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-medium text-neutral-900 truncate">
+                          {project.clientName}
+                        </h3>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+                          {config.label}
+                        </span>
                       </div>
-                      <div className="ml-4 flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="text-sm font-medium text-gray-900">
-                            {project.completionPercent}%
-                          </p>
-                          <Progress value={project.completionPercent} className="w-24 h-2" />
-                        </div>
-                      </div>
+                      <p className="text-sm text-neutral-500">
+                        {project.template.name} • Updated {formatDate(project.updatedAt)}
+                      </p>
                     </div>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                    <div className="ml-6 flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-neutral-900 mb-1">
+                          {project.completionPercent}%
+                        </p>
+                        <Progress value={project.completionPercent} className="w-24 h-1.5" />
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-neutral-400" />
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        )}
+      </div>
 
       {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link href="/projects/new">
-          <Card className="hover:border-blue-300 hover:bg-blue-50/50 transition-colors cursor-pointer">
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Plus className="h-5 w-5 text-blue-600" />
-                New Client Onboarding
-              </CardTitle>
-              <CardDescription>Start onboarding a new client</CardDescription>
-            </CardHeader>
-          </Card>
+          <div className="card-soft p-6 hover:shadow-elevated transition-all duration-200 cursor-pointer group">
+            <div className="h-11 w-11 rounded-xl bg-coral/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              <Plus className="h-5 w-5 text-coral" />
+            </div>
+            <h3 className="font-medium text-neutral-900 mb-1">New client onboarding</h3>
+            <p className="text-sm text-neutral-500">Start onboarding a new client</p>
+          </div>
         </Link>
         <Link href="/templates">
-          <Card className="hover:border-blue-300 hover:bg-blue-50/50 transition-colors cursor-pointer">
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <FolderKanban className="h-5 w-5 text-blue-600" />
-                Manage Templates
-              </CardTitle>
-              <CardDescription>Customize your onboarding templates</CardDescription>
-            </CardHeader>
-          </Card>
+          <div className="card-soft p-6 hover:shadow-elevated transition-all duration-200 cursor-pointer group">
+            <div className="h-11 w-11 rounded-xl bg-blue-soft/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              <FolderKanban className="h-5 w-5 text-blue-soft" />
+            </div>
+            <h3 className="font-medium text-neutral-900 mb-1">Manage templates</h3>
+            <p className="text-sm text-neutral-500">Customize your onboarding templates</p>
+          </div>
         </Link>
         <Link href="/settings">
-          <Card className="hover:border-blue-300 hover:bg-blue-50/50 transition-colors cursor-pointer">
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600" />
-                Organization Settings
-              </CardTitle>
-              <CardDescription>Configure branding and preferences</CardDescription>
-            </CardHeader>
-          </Card>
+          <div className="card-soft p-6 hover:shadow-elevated transition-all duration-200 cursor-pointer group">
+            <div className="h-11 w-11 rounded-xl bg-green-soft/10 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              <CheckCircle className="h-5 w-5 text-green-soft" />
+            </div>
+            <h3 className="font-medium text-neutral-900 mb-1">Organization settings</h3>
+            <p className="text-sm text-neutral-500">Configure branding and preferences</p>
+          </div>
         </Link>
       </div>
     </div>
