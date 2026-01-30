@@ -4,10 +4,10 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import {
   Navbar,
   Hero,
+  SocialProof,
+  Statement,
+  ProductSections,
   Comparison,
-  TrustedBy,
-  Features,
-  HowItWorks,
   CTA,
   Footer,
 } from "@/components/landing"
@@ -31,10 +31,10 @@ export function LandingPage() {
         <div className="relative z-10">
           <Navbar />
           <Hero />
+          <SocialProof />
+          <Statement />
+          <ProductSections />
           <Comparison />
-          <TrustedBy />
-          <Features />
-          <HowItWorks />
           <CTA />
           <Footer />
         </div>
