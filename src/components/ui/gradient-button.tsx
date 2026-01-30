@@ -135,7 +135,7 @@ export function GradientButton({
         className={cn(baseClasses, "group")}
         style={gradientStyle}
         onMouseMove={handleMouseMove}
-        onMouseLeave={(e) => {
+        onMouseLeave={() => {
           handleMouseLeave()
           handleMouseLeaveScale()
         }}
@@ -153,7 +153,7 @@ export function GradientButton({
       style={gradientStyle}
       onClick={onClick}
       onMouseMove={handleMouseMove}
-      onMouseLeave={(e) => {
+      onMouseLeave={() => {
         handleMouseLeave()
         handleMouseLeaveScale()
       }}

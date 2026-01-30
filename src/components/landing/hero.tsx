@@ -1,7 +1,6 @@
 "use client"
 
 import { useRef, useEffect } from "react"
-import Link from "next/link"
 import gsap from "gsap"
 import { ArrowRight, Play } from "lucide-react"
 import { GradientButton } from "@/components/ui/gradient-button"

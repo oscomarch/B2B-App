@@ -1,6 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const tools = ["PSA", "Documentation", "Password manager", "RMM", "Backup", "DNS"]
 
@@ -18,15 +22,69 @@ const testimonials = [
 ]
 
 export function SocialProof() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const toolsRef = useRef<HTMLDivElement>(null)
+  const testimonialsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Container entrance
+      gsap.from(containerRef.current, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      })
+
+      // Tools stagger
+      if (toolsRef.current) {
+        const toolItems = toolsRef.current.querySelectorAll(".tool-item")
+        gsap.from(toolItems, {
+          opacity: 0,
+          y: 10,
+          duration: 0.4,
+          stagger: 0.06,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: toolsRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        })
+      }
+
+      // Testimonials stagger
+      if (testimonialsRef.current) {
+        const cards = testimonialsRef.current.querySelectorAll(".testimonial-card")
+        gsap.from(cards, {
+          opacity: 0,
+          y: 24,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: testimonialsRef.current,
+            start: "top 85%",
+            once: true,
+          },
+        })
+      }
+    })
+
+    return () => ctx.revert()
+  }, [])
+
   return (
     <section className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
-        <motion.div
+        <div
+          ref={containerRef}
           className="relative overflow-hidden rounded-[24px] bg-white/70 backdrop-blur-xl border border-neutral-200/60 py-14 px-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true, margin: "-100px" }}
         >
           {/* Header */}
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 text-center mb-12">
@@ -34,33 +92,26 @@ export function SocialProof() {
           </p>
 
           {/* Tools row */}
-          <div className="flex items-center justify-center gap-8 md:gap-14 flex-wrap mb-14 pb-14 border-b border-neutral-100">
-            {tools.map((tool, index) => (
-              <motion.span
+          <div
+            ref={toolsRef}
+            className="flex items-center justify-center gap-8 md:gap-14 flex-wrap mb-14 pb-14 border-b border-neutral-100"
+          >
+            {tools.map((tool) => (
+              <span
                 key={tool}
-                className="text-[13px] font-medium text-neutral-300 cursor-default"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 + index * 0.08, duration: 0.4 }}
-                viewport={{ once: true }}
-                whileHover={{ color: "#404040", transition: { duration: 0.15 } }}
+                className="tool-item text-[13px] font-medium text-neutral-300 cursor-default hover:text-neutral-600 transition-colors duration-200"
               >
                 {tool}
-              </motion.span>
+              </span>
             ))}
           </div>
 
           {/* Testimonials */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div ref={testimonialsRef} className="grid md:grid-cols-2 gap-6">
             {testimonials.map((testimonial, index) => (
-              <motion.div
+              <div
                 key={index}
-                className="relative rounded-2xl bg-neutral-50/80 border border-neutral-100/80 p-6"
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                className="testimonial-card group relative rounded-2xl bg-neutral-50/80 border border-neutral-100/80 p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-300"
               >
                 <svg
                   className="absolute top-5 left-5 h-5 w-5 text-neutral-200"
@@ -75,10 +126,10 @@ export function SocialProof() {
                 <p className="text-[13px] text-neutral-400">
                   — {testimonial.author}, {testimonial.company}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

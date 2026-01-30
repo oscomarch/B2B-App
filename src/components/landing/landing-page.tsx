@@ -2,6 +2,7 @@
 
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider"
 import { DottedSurface } from "@/components/ui/dotted-surface"
+import { CursorFollower } from "@/components/ui/cursor-follower"
 import {
   Navbar,
   Hero,
@@ -17,6 +18,9 @@ export function LandingPage() {
   return (
     <SmoothScrollProvider>
       <div className="min-h-screen bg-[#FAFAFA] relative">
+        {/* Custom cursor for desktop */}
+        <CursorFollower />
+
         {/* 3D Dotted Surface Background */}
         <DottedSurface className="opacity-50" />
 

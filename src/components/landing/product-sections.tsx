@@ -1,7 +1,11 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Check, Play, Shield, Lock, Mail, Globe, Database, AppWindow, Users } from "lucide-react"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const intakeSections = [
   { icon: Mail, label: "Microsoft 365 / Google Workspace" },
@@ -27,36 +31,102 @@ const plays = [
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.2,
-    },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-}
-
 export function ProductSections() {
+  const section1Ref = useRef<HTMLDivElement>(null)
+  const section2Ref = useRef<HTMLDivElement>(null)
+  const section3Ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Section 1 animations
+      if (section1Ref.current) {
+        const left = section1Ref.current.querySelector(".section1-left")
+        const card = section1Ref.current.querySelector(".section1-card")
+        const items = section1Ref.current.querySelectorAll(".intake-item")
+
+        gsap.from(left, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section1Ref.current, start: "top 80%", once: true },
+        })
+
+        gsap.from(card, {
+          x: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section1Ref.current, start: "top 80%", once: true },
+        })
+
+        gsap.from(items, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: { trigger: card, start: "top 85%", once: true },
+        })
+      }
+
+      // Section 2 animations
+      if (section2Ref.current) {
+        const left = section2Ref.current.querySelector(".section2-left")
+        const cards = section2Ref.current.querySelectorAll(".play-card")
+
+        gsap.from(left, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section2Ref.current, start: "top 80%", once: true },
+        })
+
+        gsap.from(cards, {
+          y: 24,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section2Ref.current, start: "top 75%", once: true },
+        })
+      }
+
+      // Section 3 animations
+      if (section3Ref.current) {
+        const left = section3Ref.current.querySelector(".section3-left")
+        const visual = section3Ref.current.querySelector(".section3-visual")
+
+        gsap.from(left, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section3Ref.current, start: "top 80%", once: true },
+        })
+
+        gsap.from(visual, {
+          x: 40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section3Ref.current, start: "top 80%", once: true },
+        })
+      }
+    })
+
+    return () => ctx.revert()
+  }, [])
+
   return (
     <>
       {/* Product Section 1 - It starts with the client */}
-      <section id="features" className="py-28 px-6">
+      <section id="features" className="py-28 px-6" ref={section1Ref}>
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-[1fr,380px] gap-16 items-start">
             {/* Left content */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
+            <div className="section1-left">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 mb-5">
                 It starts with the client
               </p>
@@ -79,60 +149,44 @@ export function ProductSections() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Right - Intake sections card */}
-            <motion.div
-              className="bg-white/70 backdrop-blur-xl rounded-[20px] border border-neutral-200/60 p-6"
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-100px" }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            >
+            <div className="section1-card bg-white/70 backdrop-blur-xl rounded-[20px] border border-neutral-200/60 p-6 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
               <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-5">
                 Intake sections
               </p>
-              <motion.ul
-                className="space-y-2.5"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              <ul className="space-y-2.5">
                 {intakeSections.map((section, index) => {
                   const Icon = section.icon
                   return (
-                    <motion.li
+                    <li
                       key={index}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50/80 border border-neutral-100/80"
-                      variants={itemVariants}
+                      className="intake-item flex items-center gap-3 p-3 rounded-xl bg-neutral-50/80 border border-neutral-100/80 hover:bg-neutral-100/60 transition-colors duration-200"
                     >
-                      <div className="h-8 w-8 rounded-lg bg-neutral-900 flex items-center justify-center">
+                      <div
+                        className="h-8 w-8 rounded-lg flex items-center justify-center"
+                        style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                      >
                         <Icon className="h-4 w-4 text-white" />
                       </div>
                       <span className="text-[13px] font-medium text-neutral-700">{section.label}</span>
-                    </motion.li>
+                    </li>
                   )
                 })}
-              </motion.ul>
-            </motion.div>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Product Section 2 - See what's blocking you */}
-      <section className="py-28 px-6">
+      <section className="py-28 px-6" ref={section2Ref}>
         <div className="max-w-6xl mx-auto">
           <div className="relative overflow-hidden rounded-[28px] bg-neutral-50/80 border border-neutral-200/60 p-10 md:p-14">
             <div className="grid lg:grid-cols-[1fr,360px] gap-14 items-start">
               {/* Left content */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                viewport={{ once: true, margin: "-100px" }}
-              >
+              <div className="section2-left">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 mb-5">
                   See what's blocking you
                 </p>
@@ -159,25 +213,20 @@ export function ProductSections() {
                     </span>
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
               {/* Right - Plays cards */}
-              <motion.div
-                className="space-y-3"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
+              <div className="space-y-3">
                 {plays.map((play, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    className="bg-white/90 backdrop-blur-sm rounded-xl border border-neutral-200/60 p-4"
-                    variants={itemVariants}
-                    whileHover={{ y: -2, transition: { duration: 0.15 } }}
+                    className="play-card bg-white/90 backdrop-blur-sm rounded-xl border border-neutral-200/60 p-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
                   >
                     <div className="flex items-start gap-3.5">
-                      <div className="h-9 w-9 rounded-lg bg-neutral-900 flex items-center justify-center flex-shrink-0">
+                      <div
+                        className="h-9 w-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                      >
                         <Play className="h-4 w-4 text-white fill-white" />
                       </div>
                       <div>
@@ -185,25 +234,20 @@ export function ProductSections() {
                         <p className="text-[13px] text-neutral-500 leading-[1.5]">{play.description}</p>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Product Section 3 - Engage securely, with control */}
-      <section className="py-28 px-6">
+      <section className="py-28 px-6" ref={section3Ref}>
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left content */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
+            <div className="section3-left">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 mb-5">
                 Engage securely, with control
               </p>
@@ -235,29 +279,20 @@ export function ProductSections() {
               </div>
 
               {/* Quote */}
-              <motion.div
-                className="bg-neutral-50/80 border border-neutral-200/60 rounded-xl p-5"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
+              <div className="bg-neutral-50/80 border border-neutral-200/60 rounded-xl p-5">
                 <p className="text-[14px] text-neutral-600 italic leading-[1.6]">
                   "Relay replaced 40-message threads with one clean intake."
                 </p>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             {/* Right - Visual */}
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-100px" }}
-            >
-              <div className="bg-white/70 backdrop-blur-xl rounded-[24px] border border-neutral-200/60 p-10 aspect-square flex flex-col items-center justify-center">
-                <div className="h-16 w-16 rounded-2xl bg-neutral-900 flex items-center justify-center mb-6">
+            <div className="section3-visual relative">
+              <div className="bg-white/70 backdrop-blur-xl rounded-[24px] border border-neutral-200/60 p-10 aspect-square flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300">
+                <div
+                  className="h-16 w-16 rounded-2xl flex items-center justify-center mb-6"
+                  style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                >
                   <Lock className="h-8 w-8 text-white" />
                 </div>
                 <p className="text-[17px] font-medium text-neutral-800 mb-2">Secure credential handoff</p>
@@ -265,7 +300,7 @@ export function ProductSections() {
                   Expiring links · Audit trail · Policy-compliant
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
