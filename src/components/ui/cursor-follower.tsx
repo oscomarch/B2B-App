@@ -1,13 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import gsap from "gsap"
 
 export function CursorFollower() {
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorDotRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
+  const trailRefs = useRef<HTMLDivElement[]>([])
+  const mousePos = useRef({ x: 0, y: 0 })
+  const isVisible = useRef(false)
 
   useEffect(() => {
     // Only show on desktop
@@ -15,134 +14,80 @@ export function CursorFollower() {
       return
     }
 
-    const cursor = cursorRef.current
-    const dot = cursorDotRef.current
+    const trailCount = 8
+    const trails: HTMLDivElement[] = []
 
-    if (!cursor || !dot) return
+    // Create trail elements
+    for (let i = 0; i < trailCount; i++) {
+      const trail = document.createElement("div")
+      trail.className = "fixed pointer-events-none z-[9998] rounded-full mix-blend-screen hidden lg:block"
+      trail.style.cssText = `
+        width: ${12 - i}px;
+        height: ${12 - i}px;
+        background: linear-gradient(135deg, rgba(59, 130, 196, ${0.6 - i * 0.06}) 0%, rgba(155, 123, 170, ${0.5 - i * 0.05}) 50%, rgba(197, 168, 130, ${0.4 - i * 0.04}) 100%);
+        opacity: 0;
+        transform: translate(-50%, -50%);
+        filter: blur(${i * 0.5}px);
+      `
+      document.body.appendChild(trail)
+      trails.push(trail)
+    }
+    trailRefs.current = trails
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!isVisible) setIsVisible(true)
+      mousePos.current = { x: e.clientX, y: e.clientY }
 
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.5,
-        ease: "power2.out",
-      })
+      if (!isVisible.current) {
+        isVisible.current = true
+        trails.forEach(trail => {
+          trail.style.opacity = "1"
+        })
+      }
 
-      gsap.to(dot, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-      })
-    }
-
-    const onMouseEnterInteractive = () => {
-      setIsHovering(true)
-      gsap.to(cursor, {
-        scale: 2,
-        duration: 0.3,
-        ease: "power2.out",
-      })
-    }
-
-    const onMouseLeaveInteractive = () => {
-      setIsHovering(false)
-      gsap.to(cursor, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
+      // Animate each trail with increasing delay
+      trails.forEach((trail, i) => {
+        gsap.to(trail, {
+          left: e.clientX,
+          top: e.clientY,
+          duration: 0.15 + i * 0.05,
+          ease: "power2.out",
+        })
       })
     }
 
     const onMouseLeave = () => {
-      setIsVisible(false)
+      isVisible.current = false
+      trails.forEach(trail => {
+        gsap.to(trail, {
+          opacity: 0,
+          duration: 0.3,
+        })
+      })
     }
 
     const onMouseEnter = () => {
-      setIsVisible(true)
+      if (mousePos.current.x > 0) {
+        isVisible.current = true
+        trails.forEach(trail => {
+          gsap.to(trail, {
+            opacity: 1,
+            duration: 0.3,
+          })
+        })
+      }
     }
 
-    // Track mouse movement
     document.addEventListener("mousemove", onMouseMove)
     document.addEventListener("mouseleave", onMouseLeave)
     document.addEventListener("mouseenter", onMouseEnter)
-
-    // Track interactive elements
-    const interactiveElements = document.querySelectorAll(
-      "a, button, [data-cursor-hover]"
-    )
-
-    interactiveElements.forEach((el) => {
-      el.addEventListener("mouseenter", onMouseEnterInteractive)
-      el.addEventListener("mouseleave", onMouseLeaveInteractive)
-    })
-
-    // MutationObserver to handle dynamically added elements
-    const observer = new MutationObserver(() => {
-      const newElements = document.querySelectorAll(
-        "a:not([data-cursor-bound]), button:not([data-cursor-bound]), [data-cursor-hover]:not([data-cursor-bound])"
-      )
-      newElements.forEach((el) => {
-        el.setAttribute("data-cursor-bound", "true")
-        el.addEventListener("mouseenter", onMouseEnterInteractive)
-        el.addEventListener("mouseleave", onMouseLeaveInteractive)
-      })
-    })
-
-    observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       document.removeEventListener("mousemove", onMouseMove)
       document.removeEventListener("mouseleave", onMouseLeave)
       document.removeEventListener("mouseenter", onMouseEnter)
-      interactiveElements.forEach((el) => {
-        el.removeEventListener("mouseenter", onMouseEnterInteractive)
-        el.removeEventListener("mouseleave", onMouseLeaveInteractive)
-      })
-      observer.disconnect()
+      trails.forEach(trail => trail.remove())
     }
-  }, [isVisible])
+  }, [])
 
-  // Don't render on mobile/tablet
-  if (typeof window !== "undefined" && window.innerWidth < 1024) {
-    return null
-  }
-
-  return (
-    <>
-      {/* Main cursor ring */}
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden lg:block"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transition: "opacity 0.3s ease",
-        }}
-      >
-        <div
-          className="relative -translate-x-1/2 -translate-y-1/2 rounded-full border border-white"
-          style={{
-            width: isHovering ? "48px" : "32px",
-            height: isHovering ? "48px" : "32px",
-            transition: "width 0.3s ease, height 0.3s ease",
-          }}
-        />
-      </div>
-
-      {/* Cursor dot */}
-      <div
-        ref={cursorDotRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden lg:block"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transition: "opacity 0.3s ease",
-        }}
-      >
-        <div
-          className="relative -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-white"
-        />
-      </div>
-    </>
-  )
+  return null
 }
