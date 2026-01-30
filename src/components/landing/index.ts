@@ -1,0 +1,8 @@
+export { Navbar } from "./navbar"
+export { Hero } from "./hero"
+export { Comparison } from "./comparison"
+export { TrustedBy } from "./trusted-by"
+export { Features } from "./features"
+export { HowItWorks } from "./how-it-works"
+export { CTA } from "./cta"
+export { Footer } from "./footer"
