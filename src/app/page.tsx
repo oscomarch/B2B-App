@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, FileText, Shield, Zap, Users, CheckCircle, Send } from "lucide-react"
+import { ArrowRight, Check, X, FileText, Shield, Zap, Users, CheckCircle, Send } from "lucide-react"
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions)
@@ -15,9 +15,9 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-          <div className="flex items-center justify-between h-20">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 pt-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between h-16 px-6 bg-white/80 backdrop-blur-md rounded-2xl border border-neutral-200/40 shadow-soft">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
@@ -26,24 +26,40 @@ export default async function HomePage() {
               <span className="text-xl font-medium text-neutral-900">Relay</span>
             </Link>
 
-            {/* Nav Links */}
-            <div className="hidden md:flex items-center gap-10">
-              <Link href="#features" className="text-[15px] text-neutral-600 hover:text-neutral-900 transition-colors">
-                Features
-              </Link>
-              <Link href="#how-it-works" className="text-[15px] text-neutral-600 hover:text-neutral-900 transition-colors">
-                How it works
-              </Link>
+            {/* Center Nav Pill */}
+            <div className="hidden md:flex items-center">
+              <div className="flex items-center bg-neutral-100/80 rounded-full p-1">
+                <Link
+                  href="#features"
+                  className="px-5 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors rounded-full hover:bg-white/60"
+                >
+                  Product
+                </Link>
+                <Link
+                  href="#vision"
+                  className="px-5 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors rounded-full hover:bg-white/60"
+                >
+                  Vision
+                </Link>
+                <Link
+                  href="#how-it-works"
+                  className="px-5 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors rounded-full hover:bg-white/60"
+                >
+                  Benefits
+                </Link>
+              </div>
             </div>
 
-            {/* CTA */}
-            <div className="flex items-center gap-4">
-              <Link href="/login">
-                <Button variant="ghost" size="sm">Sign in</Button>
+            {/* CTA - Book a demo */}
+            <div className="flex items-center gap-3">
+              <Link href="/login" className="hidden sm:block">
+                <Button variant="ghost" size="sm" className="text-neutral-600">
+                  Sign in
+                </Button>
               </Link>
               <Link href="/register">
-                <Button size="sm" className="gap-2">
-                  Get started
+                <Button size="sm" className="gap-2 bg-gradient-to-r from-coral to-pink-soft hover:opacity-90">
+                  Book a demo
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -52,45 +68,152 @@ export default async function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-40 pb-32 md:pt-48 md:pb-40">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral/10 mb-8">
-              <span className="text-xs font-medium uppercase tracking-wider text-coral-dark">
-                Built for MSPs
-              </span>
+      {/* Hero Section with Rounded Background */}
+      <section className="pt-32 pb-8 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Rounded rectangle hero container */}
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-white to-cream-dark border border-neutral-200/40 px-8 py-20 md:px-16 md:py-28">
+            {/* Subtle gradient accents */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-coral/10 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-pink-soft/10 to-transparent rounded-full blur-3xl" />
+
+            <div className="relative z-10 max-w-4xl mx-auto text-center">
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral/10 mb-8">
+                <span className="text-xs font-medium uppercase tracking-wider text-coral-dark">
+                  Built for MSPs
+                </span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="text-display text-neutral-900 mb-8">
+                Send one link.
+                <br />
+                <span className="bg-gradient-to-r from-coral to-pink-soft bg-clip-text text-transparent">
+                  Collect everything.
+                </span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-body-lg max-w-2xl mx-auto mb-12">
+                Relay replaces spreadsheets, PDFs, and email chaos with a single,
+                structured onboarding portal for your MSP clients.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="/register">
+                  <Button size="lg" className="gap-2 min-w-[200px] bg-gradient-to-r from-coral to-pink-soft hover:opacity-90 shadow-lg shadow-coral/25">
+                    Book a demo
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link href="#how-it-works">
+                  <Button variant="outline" size="lg" className="min-w-[200px] bg-white/60 hover:bg-white">
+                    See how it works
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Old Way vs The Relay Way */}
+      <section id="vision" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="max-w-2xl mx-auto text-center mb-16">
+            <p className="text-eyebrow mb-4">Why Relay</p>
+            <h2 className="text-headline text-neutral-900 mb-6">
+              There&apos;s a better way to onboard
+            </h2>
+          </div>
+
+          {/* Comparison Grid */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* The Old Way */}
+            <div className="relative">
+              <div className="card-soft p-8 h-full border-2 border-neutral-200/60">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 mb-8">
+                  <span className="text-sm font-medium text-neutral-500">The old way</span>
+                </div>
+
+                <ul className="space-y-5">
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="h-3.5 w-3.5 text-neutral-400" />
+                    </div>
+                    <span className="text-neutral-600">Scattered emails with passwords in plain text</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="h-3.5 w-3.5 text-neutral-400" />
+                    </div>
+                    <span className="text-neutral-600">Spreadsheets nobody can find or update</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="h-3.5 w-3.5 text-neutral-400" />
+                    </div>
+                    <span className="text-neutral-600">Chasing clients for missing information</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="h-3.5 w-3.5 text-neutral-400" />
+                    </div>
+                    <span className="text-neutral-600">No visibility into what&apos;s been completed</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-neutral-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="h-3.5 w-3.5 text-neutral-400" />
+                    </div>
+                    <span className="text-neutral-600">Hours wasted on every new client</span>
+                  </li>
+                </ul>
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-display text-neutral-900 mb-8">
-              Send one link.
-              <br />
-              <span className="bg-gradient-to-r from-coral to-pink-soft bg-clip-text text-transparent">
-                Collect everything.
-              </span>
-            </h1>
+            {/* The Relay Way */}
+            <div className="relative">
+              <div className="card-elevated p-8 h-full border-2 border-coral/20 bg-gradient-to-br from-white to-coral/5">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral/10 mb-8">
+                  <span className="text-sm font-medium text-coral-dark">The Relay way</span>
+                </div>
 
-            {/* Subheadline */}
-            <p className="text-body-lg max-w-2xl mx-auto mb-12">
-              Relay replaces spreadsheets, PDFs, and email chaos with a single,
-              structured onboarding portal for your MSP clients.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/register">
-                <Button size="lg" className="gap-2 min-w-[200px]">
-                  Start free trial
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="#how-it-works">
-                <Button variant="outline" size="lg" className="min-w-[200px]">
-                  See how it works
-                </Button>
-              </Link>
+                <ul className="space-y-5">
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-neutral-900">Secure credential handover via encrypted links</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-neutral-900">One centralized portal for everything</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-neutral-900">Clients fill everything in one sitting</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-neutral-900">Real-time progress tracking dashboard</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3.5 w-3.5 text-white" />
+                    </div>
+                    <span className="text-neutral-900">Professional onboarding in minutes</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -295,7 +418,7 @@ export default async function HomePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href="/register">
                   <Button variant="coral" size="lg" className="gap-2 min-w-[200px]">
-                    Get started for free
+                    Book a demo
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
