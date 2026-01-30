@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
@@ -28,6 +29,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const project = await prisma.onboardingProject.findUnique({
+    where: { id },
+    select: { clientName: true },
+  })
+
+  return {
+    title: project ? `${project.clientName} | Relay` : "Project | Relay",
+    description: "View and manage client onboarding project details",
+  }
+}
 import { formatDate, formatDateTime } from "@/lib/utils"
 import { ProjectActions } from "@/components/projects/project-actions"
 import { CredentialsList } from "@/components/projects/credentials-list"

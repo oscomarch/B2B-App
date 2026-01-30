@@ -1,12 +1,17 @@
+import { Metadata } from "next"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Plus, FolderKanban, Clock, CheckCircle, AlertCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { formatDate } from "@/lib/utils"
+
+export const metadata: Metadata = {
+  title: "Dashboard | Relay",
+  description: "Overview of your onboarding projects and recent activity",
+}
 
 async function getStats(organizationId: string) {
   const [total, draft, inProgress, completed] = await Promise.all([

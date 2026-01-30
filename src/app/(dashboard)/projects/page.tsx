@@ -1,14 +1,19 @@
+import { Metadata } from "next"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
-import { Plus, Search, FolderKanban, Clock, CheckCircle, AlertCircle, ExternalLink, Copy } from "lucide-react"
+import { Plus, FolderKanban, Clock, CheckCircle, AlertCircle, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Input } from "@/components/ui/input"
 import { formatDate, formatDateTime } from "@/lib/utils"
+
+export const metadata: Metadata = {
+  title: "Projects | Relay",
+  description: "Manage your client onboarding projects",
+}
 
 async function getProjects(organizationId: string) {
   return prisma.onboardingProject.findMany({
