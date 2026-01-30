@@ -3,32 +3,34 @@
 import { motion } from "framer-motion"
 import { FadeIn } from "@/components/animations/motion"
 
-const logos = ["ConnectWise", "Datto", "IT Glue", "Hudu"]
+const logos = ["ConnectWise", "Datto", "IT Glue", "Hudu", "Syncro"]
 
 export function TrustedBy() {
   return (
-    <section className="py-16 border-y border-neutral-200/40">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <section className="py-16 px-6">
+      <div className="max-w-7xl mx-auto">
         <FadeIn>
-          <p className="text-eyebrow text-center mb-10">
-            Trusted by MSPs worldwide
-          </p>
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-neutral-200 shadow-sm py-12 px-8">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-500 text-center mb-8">
+              Trusted by MSPs worldwide
+            </p>
+            <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
+              {logos.map((logo, index) => (
+                <motion.span
+                  key={logo}
+                  className="text-lg font-medium text-neutral-300"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ color: "#525252", scale: 1.05 }}
+                >
+                  {logo}
+                </motion.span>
+              ))}
+            </div>
+          </div>
         </FadeIn>
-        <div className="flex items-center justify-center gap-12 md:gap-20">
-          {logos.map((logo, index) => (
-            <motion.span
-              key={logo}
-              className={`text-xl font-medium text-neutral-400 ${index === 3 ? "hidden md:block" : ""}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 0.4, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ opacity: 0.7, scale: 1.05 }}
-            >
-              {logo}
-            </motion.span>
-          ))}
-        </div>
       </div>
     </section>
   )

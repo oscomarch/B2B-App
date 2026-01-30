@@ -4,95 +4,68 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { FadeIn } from "@/components/animations/motion"
-import { AnimatedButton } from "@/components/ui/animated-button"
 
 export function CTA() {
   return (
-    <section className="section-padding">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+    <section className="py-24 px-6">
+      <div className="max-w-7xl mx-auto">
         <FadeIn>
           <motion.div
-            className="relative overflow-hidden rounded-3xl bg-neutral-900 p-12 md:p-20"
+            className="relative overflow-hidden rounded-[2rem] bg-neutral-900 p-12 md:p-20 border border-neutral-800"
             whileHover={{ scale: 1.005 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Animated gradient overlay */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: [
-                  "linear-gradient(135deg, rgba(255, 138, 115, 0.2) 0%, transparent 50%, rgba(128, 90, 213, 0.2) 100%)",
-                  "linear-gradient(225deg, rgba(255, 138, 115, 0.2) 0%, transparent 50%, rgba(128, 90, 213, 0.2) 100%)",
-                  "linear-gradient(315deg, rgba(255, 138, 115, 0.2) 0%, transparent 50%, rgba(128, 90, 213, 0.2) 100%)",
-                  "linear-gradient(45deg, rgba(255, 138, 115, 0.2) 0%, transparent 50%, rgba(128, 90, 213, 0.2) 100%)",
-                  "linear-gradient(135deg, rgba(255, 138, 115, 0.2) 0%, transparent 50%, rgba(128, 90, 213, 0.2) 100%)",
-                ],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            />
-
-            {/* Floating orbs */}
-            <motion.div
-              className="absolute top-10 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl"
-              animate={{
-                x: [0, 50, 0],
-                y: [0, 30, 0],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="absolute bottom-10 right-10 w-40 h-40 bg-purple-soft/20 rounded-full blur-3xl"
-              animate={{
-                x: [0, -30, 0],
-                y: [0, -50, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
+            {/* Gradient accents */}
+            <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-orange-500/20 to-transparent rounded-full blur-3xl" />
 
             <div className="relative z-10 max-w-2xl mx-auto text-center">
-              <motion.h2
-                className="text-headline text-white mb-6"
+              <motion.p
+                className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-400 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                Ready to streamline your onboarding?
-              </motion.h2>
-              <motion.p
-                className="text-lg text-neutral-300 mb-10 leading-relaxed"
+                Get started today
+              </motion.p>
+              <motion.h2
+                className="text-4xl md:text-5xl font-medium text-white mb-6 tracking-tight"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                Join MSPs who have already simplified their client onboarding
-                process with Relay. Start your free trial today.
-              </motion.p>
-              <motion.div
-                className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                Ready to streamline your onboarding?
+              </motion.h2>
+              <motion.p
+                className="text-lg text-neutral-400 mb-10 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
               >
+                Join MSPs who have already simplified their client onboarding
+                process with Relay.
+              </motion.p>
+              <motion.div
+                className="flex justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
                 <Link href="/register">
-                  <AnimatedButton variant="primary" size="lg" className="min-w-[200px]">
+                  <motion.button
+                    className="flex items-center gap-3 pl-8 pr-3 py-3 bg-white rounded-full text-neutral-900 font-medium shadow-lg hover:shadow-xl transition-shadow"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     Book a demo
-                    <ArrowRight className="h-4 w-4" />
-                  </AnimatedButton>
+                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-orange-400 text-white">
+                      <ArrowRight className="h-5 w-5" />
+                    </span>
+                  </motion.button>
                 </Link>
               </motion.div>
             </div>
