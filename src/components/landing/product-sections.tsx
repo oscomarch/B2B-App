@@ -166,7 +166,7 @@ export function ProductSections() {
                     >
                       <div
                         className="h-8 w-8 rounded-lg flex items-center justify-center"
-                        style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                        style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                       >
                         <Icon className="h-4 w-4 text-white" />
                       </div>
@@ -225,7 +225,7 @@ export function ProductSections() {
                     <div className="flex items-start gap-3.5">
                       <div
                         className="h-9 w-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                        style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                       >
                         <Play className="h-4 w-4 text-white fill-white" />
                       </div>
@@ -291,7 +291,7 @@ export function ProductSections() {
               <div className="bg-white/70 backdrop-blur-xl rounded-[24px] border border-neutral-200/60 p-10 aspect-square flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300">
                 <div
                   className="h-16 w-16 rounded-2xl flex items-center justify-center mb-6"
-                  style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                  style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                 >
                   <Lock className="h-8 w-8 text-white" />
                 </div>

@@ -98,7 +98,7 @@ export function GradientButton({
   )
 
   const gradientStyle = variant === "filled"
-    ? { background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }
+    ? { background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }
     : {}
 
   const content = (
@@ -108,7 +108,7 @@ export function GradientButton({
           className="absolute inset-0 rounded-full"
           style={{
             padding: "2px",
-            background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)",
+            background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)",
             WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "xor",
             maskComposite: "exclude",

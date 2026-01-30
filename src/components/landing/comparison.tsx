@@ -136,7 +136,7 @@ export function Comparison() {
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 mb-6">
                   <span
                     className="w-1.5 h-1.5 rounded-full animate-pulse"
-                    style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                    style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                   />
                   <span className="text-[12px] font-medium text-neutral-200">The Relay way</span>
                 </div>
@@ -146,7 +146,7 @@ export function Comparison() {
                     <li key={index} className="relay-way-item flex items-start gap-3">
                       <div
                         className="h-5 w-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                        style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+                        style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                       >
                         <Check className="h-3 w-3 text-white" />
                       </div>

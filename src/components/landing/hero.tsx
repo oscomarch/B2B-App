@@ -1,9 +1,9 @@
 "use client"
 
 import { useRef, useEffect } from "react"
+import Image from "next/image"
 import gsap from "gsap"
 import { ArrowRight, Play } from "lucide-react"
-import { GradientButton } from "@/components/ui/gradient-button"
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -87,86 +87,108 @@ export function Hero() {
   return (
     <section className="relative pt-32 pb-16 px-6">
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Main hero container */}
+        {/* Main hero container with gradient background image */}
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-[32px] bg-white/70 backdrop-blur-xl border border-neutral-200/60 px-8 py-16 md:px-14 md:py-20"
+          className="relative overflow-hidden rounded-[32px] min-h-[600px]"
         >
-          <div className="relative z-10 grid lg:grid-cols-[1fr,340px] gap-12 items-start">
-            {/* Left content */}
-            <div className="max-w-xl">
-              {/* Kicker */}
-              <p
-                ref={kickerRef}
-                className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 mb-8"
-              >
-                Secure client onboarding for MSPs
-              </p>
+          {/* Background image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/hero-gradient.jpg"
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
+            {/* Subtle overlay for better text readability */}
+            <div className="absolute inset-0 bg-black/10" />
+          </div>
 
-              {/* Headline */}
-              <h1
-                ref={headlineRef}
-                className="text-[42px] md:text-[52px] font-medium text-neutral-900 mb-6 tracking-[-0.02em] leading-[1.08]"
-              >
-                Meet the client handoff portal for MSPs.
-              </h1>
-
-              {/* Subheadline */}
-              <p
-                ref={subheadRef}
-                className="text-[17px] text-neutral-500 mb-10 leading-[1.6] max-w-lg"
-              >
-                Relay replaces onboarding spreadsheets + email threads with one secure intake link. Collect access, credentials, and IT discovery details, track what's missing, and hand off cleanly to your team.
-              </p>
-
-              {/* CTA Button */}
-              <div ref={ctaRef} className="mb-8">
-                <GradientButton href="/register" size="md">
-                  Book a demo
-                  <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white/20">
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </GradientButton>
-              </div>
-
-              {/* Microcopy */}
-              <p
-                ref={microcopyRef}
-                className="text-[13px] text-neutral-400"
-              >
-                No more "can you resend the DNS login?" · No passwords in email · Clear status for every request
-              </p>
-            </div>
-
-            {/* Right card - Onboarding play */}
-            <div
-              ref={cardRef}
-              className="group bg-white/90 backdrop-blur-sm rounded-2xl border border-neutral-200/60 p-5 hidden lg:block hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="h-9 w-9 rounded-lg flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+          {/* Content */}
+          <div className="relative z-10 px-8 py-16 md:px-14 md:py-20">
+            <div className="grid lg:grid-cols-[1fr,340px] gap-12 items-start">
+              {/* Left content */}
+              <div className="max-w-xl">
+                {/* Kicker */}
+                <p
+                  ref={kickerRef}
+                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70 mb-8"
                 >
-                  <Play className="h-4 w-4 text-white fill-white" />
+                  Secure client onboarding for MSPs
+                </p>
+
+                {/* Headline */}
+                <h1
+                  ref={headlineRef}
+                  className="text-[42px] md:text-[52px] font-medium text-white mb-6 tracking-[-0.02em] leading-[1.08]"
+                >
+                  Meet the client handoff portal for MSPs.
+                </h1>
+
+                {/* Subheadline */}
+                <p
+                  ref={subheadRef}
+                  className="text-[17px] text-white/80 mb-10 leading-[1.6] max-w-lg"
+                >
+                  Relay replaces onboarding spreadsheets + email threads with one secure intake link. Collect access, credentials, and IT discovery details, track what's missing, and hand off cleanly to your team.
+                </p>
+
+                {/* CTA Button */}
+                <div ref={ctaRef} className="mb-8">
+                  <a
+                    href="/register"
+                    className="group inline-flex items-center gap-3 pl-6 pr-2 py-2 bg-white rounded-full text-[14px] font-medium text-neutral-900 hover:bg-white/90 transition-colors"
+                  >
+                    Book a demo
+                    <span
+                      className="flex items-center justify-center w-8 h-8 rounded-full text-white"
+                      style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+                    >
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </a>
                 </div>
-                <span className="text-[12px] font-medium text-neutral-400 uppercase tracking-wide">Onboarding play</span>
+
+                {/* Microcopy */}
+                <p
+                  ref={microcopyRef}
+                  className="text-[13px] text-white/60"
+                >
+                  No more "can you resend the DNS login?" · No passwords in email · Clear status for every request
+                </p>
               </div>
 
-              <h3 className="text-[17px] font-semibold text-neutral-900 mb-2 tracking-tight">
-                Take over a new client
-              </h3>
-              <p className="text-[14px] text-neutral-500 mb-5 leading-relaxed">
-                Turn a messy transition into a structured intake your client actually completes.
-              </p>
+              {/* Right card - Onboarding play */}
+              <div
+                ref={cardRef}
+                className="group bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-5 hidden lg:block hover:bg-white/15 transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="h-9 w-9 rounded-lg flex items-center justify-center"
+                    style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+                  >
+                    <Play className="h-4 w-4 text-white fill-white" />
+                  </div>
+                  <span className="text-[12px] font-medium text-white/60 uppercase tracking-wide">Onboarding play</span>
+                </div>
 
-              <div className="pt-4 border-t border-neutral-100">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-neutral-400 mb-2">
-                  Happens when
+                <h3 className="text-[17px] font-semibold text-white mb-2 tracking-tight">
+                  Take over a new client
+                </h3>
+                <p className="text-[14px] text-white/70 mb-5 leading-relaxed">
+                  Turn a messy transition into a structured intake your client actually completes.
                 </p>
-                <p className="text-[13px] text-neutral-500">
-                  Contract signed · Kickoff done · Cutover scheduled
-                </p>
+
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-white/50 mb-2">
+                    Happens when
+                  </p>
+                  <p className="text-[13px] text-white/70">
+                    Contract signed · Kickoff done · Cutover scheduled
+                  </p>
+                </div>
               </div>
             </div>
           </div>

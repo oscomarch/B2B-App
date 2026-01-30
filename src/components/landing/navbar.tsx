@@ -99,7 +99,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 px-2">
             <div
               className="h-7 w-7 rounded-md flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+              style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
             >
               <span className="text-xs font-bold text-white">R</span>
             </div>
@@ -124,7 +124,7 @@ export function Navbar() {
           <Link href="/register">
             <button
               className="flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full text-[13px] font-medium text-white hover:opacity-90 transition-opacity"
-              style={{ background: "linear-gradient(135deg, #FC8435 0%, #6286FB 100%)" }}
+              style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
             >
               Demo
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
