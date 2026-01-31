@@ -28,18 +28,21 @@ export function Statement() {
   }, [])
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-12 px-4">
       <div
         ref={sectionRef}
-        className="max-w-3xl mx-auto text-center px-6 py-12 rounded-2xl"
+        className="max-w-4xl mx-auto text-center px-8 py-14 rounded-2xl"
         style={{
-          background: "linear-gradient(135deg, rgba(59, 130, 196, 0.06) 0%, rgba(155, 123, 170, 0.04) 50%, rgba(197, 168, 130, 0.06) 100%)",
+          background: "linear-gradient(135deg, rgba(59, 130, 196, 0.05) 0%, rgba(155, 123, 170, 0.04) 50%, rgba(197, 168, 130, 0.05) 100%)",
         }}
       >
-        <h2 className="text-[24px] md:text-[30px] font-medium text-neutral-900 tracking-[-0.02em] leading-[1.3]">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">
+          Why Relay
+        </p>
+        <h2 className="text-[24px] md:text-[32px] font-medium text-neutral-900 tracking-[-0.02em] leading-[1.25]">
           Your checklist lists the tasks.
           <br />
-          <span className="text-neutral-400">Relay gets the missing access.</span>
+          <span className="text-neutral-400">Relay gets you the access.</span>
         </h2>
       </div>
     </section>

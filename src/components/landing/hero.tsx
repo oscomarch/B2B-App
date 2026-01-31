@@ -14,7 +14,7 @@ export function Hero() {
     const ctx = gsap.context(() => {
       gsap.set(containerRef.current, { opacity: 0, y: 30 })
       gsap.set(textRef.current, { opacity: 0, y: 40 })
-      gsap.set(mockupRef.current, { opacity: 0, y: 60, scale: 0.95 })
+      gsap.set(mockupRef.current, { opacity: 0, y: 50, scale: 0.98 })
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } })
 
@@ -31,7 +31,7 @@ export function Hero() {
       <div className="relative z-10 max-w-[1320px] mx-auto flex-1 flex flex-col pb-6">
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-[24px] md:rounded-[28px] flex-1"
+          className="relative overflow-hidden rounded-[24px] md:rounded-[32px] flex-1"
         >
           {/* Background image */}
           <div className="absolute inset-0">
@@ -45,80 +45,82 @@ export function Hero() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 h-full flex flex-col px-6 py-8 md:px-10 lg:px-14 md:py-10">
+          <div className="relative z-10 h-full flex flex-col justify-between px-8 py-10 md:px-12 lg:px-16 md:py-12">
             {/* Top - Centered text content */}
-            <div ref={textRef} className="text-center max-w-2xl mx-auto mb-8">
-              <p className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60 mb-3">
+            <div ref={textRef} className="text-center max-w-2xl mx-auto pt-4 md:pt-8">
+              <p className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50 mb-4">
                 Secure client onboarding for MSPs
               </p>
 
-              <h1 className="text-[28px] md:text-[38px] lg:text-[44px] font-medium text-white mb-3 tracking-[-0.03em] leading-[1.1]">
-                Meet the client handoff portal for MSPs.
+              <h1 className="text-[30px] md:text-[40px] lg:text-[48px] font-medium text-white mb-4 tracking-[-0.03em] leading-[1.08]">
+                The client handoff portal
+                <br />
+                <span className="text-white/80">built for MSPs.</span>
               </h1>
 
-              <p className="text-[14px] md:text-[15px] text-white/70 mb-5 leading-[1.6] max-w-lg mx-auto">
-                Relay replaces onboarding spreadsheets + email threads with one secure intake link. Collect credentials, track what's missing, and hand off cleanly.
+              <p className="text-[14px] md:text-[16px] text-white/60 mb-8 leading-[1.7] max-w-md mx-auto">
+                One secure link to collect credentials, track what's missing, and hand off cleanly.
               </p>
 
-              {/* CTA Button */}
-              <div className="flex items-center justify-center gap-4 mb-4">
+              {/* CTA Button - more prominent */}
+              <div className="flex flex-col items-center gap-4 mb-6">
                 <a
                   href="/register"
-                  className="group inline-flex items-center gap-3 pl-5 pr-1.5 py-1.5 bg-white rounded-full text-[14px] font-medium text-neutral-900 hover:bg-white/90 transition-colors"
+                  className="group inline-flex items-center gap-3 pl-6 pr-2 py-2 bg-white rounded-full text-[15px] font-medium text-neutral-900 hover:bg-white/95 transition-all hover:shadow-lg"
                 >
                   Book a demo
                   <span
-                    className="flex items-center justify-center w-8 h-8 rounded-full text-white"
+                    className="flex items-center justify-center w-9 h-9 rounded-full text-white transition-transform group-hover:scale-105"
                     style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                   >
                     <ArrowRight className="h-4 w-4" />
                   </span>
                 </a>
-                <span className="text-[13px] text-white/50">Free for early teams</span>
+                <span className="text-[12px] text-white/40">Free for early teams</span>
               </div>
 
-              {/* Trust badges */}
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <div className="flex items-center gap-1.5 text-[12px] text-white/50">
+              {/* Trust badges - subtle, separated */}
+              <div className="flex flex-wrap items-center justify-center gap-6 pt-2">
+                <div className="flex items-center gap-1.5 text-[11px] text-white/40">
                   <Shield className="h-3.5 w-3.5" />
                   <span>SOC 2 Ready</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[12px] text-white/50">
+                <div className="flex items-center gap-1.5 text-[11px] text-white/40">
                   <Clock className="h-3.5 w-3.5" />
                   <span>5 min setup</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[12px] text-white/50">
+                <div className="flex items-center gap-1.5 text-[11px] text-white/40">
                   <Users className="h-3.5 w-3.5" />
                   <span>Unlimited clients</span>
                 </div>
               </div>
             </div>
 
-            {/* Bottom - Dashboard Mockup centered */}
-            <div ref={mockupRef} className="relative flex-1 flex items-start justify-center">
+            {/* Bottom - Dashboard Mockup centered and grounded */}
+            <div ref={mockupRef} className="relative flex items-end justify-center pt-6">
               {/* Main dashboard card */}
-              <div className="relative bg-white/[0.12] backdrop-blur-xl rounded-2xl border border-white/20 p-4 shadow-2xl">
+              <div className="relative bg-white/[0.12] backdrop-blur-xl rounded-2xl border border-white/20 p-5 shadow-2xl min-w-[320px] md:min-w-[380px]">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <div
-                      className="h-7 w-7 rounded-lg flex items-center justify-center"
+                      className="h-8 w-8 rounded-lg flex items-center justify-center"
                       style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
                     >
-                      <span className="text-[10px] font-bold text-white">R</span>
+                      <span className="text-[11px] font-bold text-white">R</span>
                     </div>
-                    <span className="text-[13px] font-semibold text-white">Acme Corp Onboarding</span>
+                    <span className="text-[14px] font-semibold text-white">Acme Corp Onboarding</span>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 font-medium">In Progress</span>
+                  <span className="text-[10px] px-2.5 py-1 rounded-full bg-green-500/20 text-green-300 font-medium">In Progress</span>
                 </div>
 
                 {/* Progress */}
-                <div className="mb-4">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] text-white/60">Completion</span>
-                    <span className="text-[11px] font-medium text-white">68%</span>
+                <div className="mb-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] text-white/50">Completion</span>
+                    <span className="text-[12px] font-medium text-white">68%</span>
                   </div>
-                  <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full"
                       style={{
@@ -140,11 +142,11 @@ export function Hero() {
                   ].map((item, i) => (
                     <div
                       key={i}
-                      className={`flex items-center gap-2.5 p-2 rounded-lg ${
+                      className={`flex items-center gap-3 p-2.5 rounded-lg ${
                         item.done ? "bg-white/5" : item.pending ? "bg-amber-500/10" : "bg-white/[0.02]"
                       }`}
                     >
-                      <div className={`h-5 w-5 rounded-md flex items-center justify-center ${
+                      <div className={`h-5 w-5 rounded-md flex items-center justify-center flex-shrink-0 ${
                         item.done
                           ? "bg-green-500/20"
                           : item.pending
@@ -159,11 +161,11 @@ export function Hero() {
                           <div className="h-2 w-2 rounded-full bg-white/30" />
                         )}
                       </div>
-                      <span className={`text-[12px] ${item.done ? "text-white/70" : "text-white/50"}`}>
+                      <span className={`text-[13px] ${item.done ? "text-white/70" : "text-white/50"}`}>
                         {item.label}
                       </span>
                       {item.pending && (
-                        <span className="ml-auto text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">
+                        <span className="ml-auto text-[9px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-medium">
                           Awaiting client
                         </span>
                       )}
@@ -173,13 +175,13 @@ export function Hero() {
               </div>
 
               {/* Floating notification card */}
-              <div className="absolute -bottom-4 -left-4 bg-white/[0.15] backdrop-blur-xl rounded-xl border border-white/20 p-3 shadow-xl">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-8 w-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+              <div className="absolute -bottom-3 -left-6 md:-left-10 bg-white/[0.15] backdrop-blur-xl rounded-xl border border-white/20 p-3 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-lg bg-green-500/20 flex items-center justify-center">
                     <FileCheck className="h-4 w-4 text-green-400" />
                   </div>
                   <div>
-                    <p className="text-[11px] font-medium text-white">Credentials received</p>
+                    <p className="text-[12px] font-medium text-white">Credentials received</p>
                     <p className="text-[10px] text-white/50">Microsoft 365 · Just now</p>
                   </div>
                 </div>
