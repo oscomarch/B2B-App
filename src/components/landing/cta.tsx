@@ -23,7 +23,9 @@ export function CTA() {
           Early teams get white-glove setup and custom onboarding templates.
         </p>
         <a
-          href="/register"
+          href="https://calendly.com/oscomarch/call-20min"
+          target="_blank"
+          rel="noopener noreferrer"
           className="group inline-flex items-center gap-3 pl-7 pr-2 py-2.5 rounded-full text-[15px] font-medium text-white transition-all hover:shadow-xl hover:scale-[1.02]"
           style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
         >

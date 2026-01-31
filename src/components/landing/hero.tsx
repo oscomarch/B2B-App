@@ -26,10 +26,37 @@ const CIRCLE_COLORS = [
     { border: "border-[#C5A882]/30", glow: "rgba(197, 168, 130, 0.08)" },
 ]
 
+// Floating particles for extra depth
+const FloatingParticle = ({ delay, duration, x, y, size }: { delay: number; duration: number; x: string; y: string; size: number }) => (
+    <motion.div
+        className="absolute rounded-full bg-gradient-to-br from-[#3B82C4]/20 to-[#9B7BAA]/10"
+        style={{ width: size, height: size, left: x, top: y }}
+        animate={{
+            y: [-20, 20, -20],
+            x: [-10, 10, -10],
+            opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+            duration,
+            delay,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+        }}
+    />
+)
+
 export function Hero() {
     return (
         <section className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-[#FAFAFA]">
             <AnimatedGrid />
+
+            {/* Floating particles */}
+            <FloatingParticle delay={0} duration={8} x="15%" y="20%" size={6} />
+            <FloatingParticle delay={1} duration={10} x="80%" y="30%" size={4} />
+            <FloatingParticle delay={2} duration={9} x="25%" y="70%" size={5} />
+            <FloatingParticle delay={0.5} duration={11} x="75%" y="65%" size={7} />
+            <FloatingParticle delay={1.5} duration={7} x="60%" y="15%" size={4} />
+            <FloatingParticle delay={3} duration={12} x="10%" y="50%" size={5} />
 
             {/* Animated circles */}
             <motion.div className="absolute h-[450px] w-[450px] md:h-[550px] md:w-[550px] lg:h-[650px] lg:w-[650px]">
@@ -71,8 +98,8 @@ export function Hero() {
             >
                 <motion.p
                     className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 mb-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
                 >
                     Secure client onboarding for MSPs
@@ -88,16 +115,29 @@ export function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.15, duration: 0.8 }}
                 >
-                    The client handoff portal
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        The client handoff portal
+                    </motion.span>
                     <br />
-                    <span className="text-neutral-400">built for MSPs.</span>
+                    <motion.span
+                        className="text-neutral-400"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        built for MSPs.
+                    </motion.span>
                 </motion.h1>
 
                 <motion.p
                     className="text-base md:text-lg text-neutral-500 mb-10 max-w-md mx-auto leading-relaxed"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.25 }}
+                    transition={{ delay: 0.5 }}
                 >
                     One secure link to collect credentials, track what's missing, and hand off cleanly.
                 </motion.p>
@@ -107,18 +147,26 @@ export function Hero() {
                     className="flex flex-col items-center gap-4 mb-10"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35 }}
+                    transition={{ delay: 0.6 }}
                 >
-                    <a
-                        href="/register"
-                        className="group inline-flex items-center gap-3 pl-7 pr-2 py-2.5 rounded-full text-[15px] font-medium text-white transition-all hover:shadow-xl hover:scale-[1.02]"
+                    <motion.a
+                        href="https://calendly.com/oscomarch/call-20min"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-3 pl-7 pr-2 py-2.5 rounded-full text-[15px] font-medium text-white transition-all"
                         style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(59, 130, 196, 0.3)" }}
+                        whileTap={{ scale: 0.98 }}
                     >
                         Book a demo
-                        <span className="flex items-center justify-center w-9 h-9 rounded-full bg-white/20 transition-transform group-hover:scale-105">
+                        <motion.span
+                            className="flex items-center justify-center w-9 h-9 rounded-full bg-white/20"
+                            whileHover={{ rotate: -45 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                        >
                             <ArrowRight className="h-4 w-4" />
-                        </span>
-                    </a>
+                        </motion.span>
+                    </motion.a>
                     <span className="text-[12px] text-neutral-400">Free for early teams</span>
                 </motion.div>
 
@@ -127,20 +175,24 @@ export function Hero() {
                     className="flex flex-wrap items-center justify-center gap-6"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.45 }}
+                    transition={{ delay: 0.7 }}
                 >
-                    <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-                        <Shield className="h-3.5 w-3.5" />
-                        <span>SOC 2 Ready</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-                        <Clock className="h-3.5 w-3.5" />
-                        <span>5 min setup</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-                        <Users className="h-3.5 w-3.5" />
-                        <span>Unlimited clients</span>
-                    </div>
+                    {[
+                        { icon: Shield, text: "SOC 2 Ready" },
+                        { icon: Clock, text: "5 min setup" },
+                        { icon: Users, text: "Unlimited clients" },
+                    ].map((badge, i) => (
+                        <motion.div
+                            key={badge.text}
+                            className="flex items-center gap-1.5 text-[11px] text-neutral-400"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8 + i * 0.1 }}
+                        >
+                            <badge.icon className="h-3.5 w-3.5" />
+                            <span>{badge.text}</span>
+                        </motion.div>
+                    ))}
                 </motion.div>
             </motion.div>
         </section>

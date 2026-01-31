@@ -13,6 +13,7 @@ interface GradientButtonProps {
   variant?: "filled" | "outline"
   size?: "sm" | "md" | "lg"
   magnetic?: boolean
+  external?: boolean
 }
 
 export function GradientButton({
@@ -23,6 +24,7 @@ export function GradientButton({
   variant = "filled",
   size = "md",
   magnetic = true,
+  external = false,
 }: GradientButtonProps) {
   const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
@@ -128,6 +130,26 @@ export function GradientButton({
   )
 
   if (href) {
+    if (external) {
+      return (
+        <a
+          href={href}
+          ref={buttonRef as React.RefObject<HTMLAnchorElement>}
+          className={cn(baseClasses, "group")}
+          style={gradientStyle}
+          target="_blank"
+          rel="noopener noreferrer"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => {
+            handleMouseLeave()
+            handleMouseLeaveScale()
+          }}
+          onMouseEnter={handleMouseEnter}
+        >
+          {content}
+        </a>
+      )
+    }
     return (
       <Link
         href={href}

@@ -81,7 +81,7 @@ export function Navbar() {
           </div>
 
           {/* Book a demo button */}
-          <GradientButton href="/register" size="sm">
+          <GradientButton href="https://calendly.com/oscomarch/call-20min" size="sm" external>
             Book a demo
             <ArrowRight className="h-3.5 w-3.5" />
           </GradientButton>
@@ -121,7 +121,7 @@ export function Navbar() {
           <div className="w-px h-5 bg-neutral-200 mx-1" />
 
           {/* CTA */}
-          <Link href="/register">
+          <a href="https://calendly.com/oscomarch/call-20min" target="_blank" rel="noopener noreferrer">
             <button
               className="flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full text-[13px] font-medium text-white hover:opacity-90 transition-opacity"
               style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
@@ -131,7 +131,7 @@ export function Navbar() {
                 <ArrowRight className="h-3 w-3" />
               </span>
             </button>
-          </Link>
+          </a>
         </div>
       </div>
     </>
