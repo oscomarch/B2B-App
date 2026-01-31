@@ -1,36 +1,18 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 
-gsap.registerPlugin(ScrollTrigger)
-
 export function CTA() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(sectionRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      })
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section id="how-it-works" className="py-24 px-4" ref={sectionRef}>
-      <div className="max-w-2xl mx-auto text-center">
+    <section id="how-it-works" className="py-24 px-4 bg-white">
+      <motion.div
+        className="max-w-2xl mx-auto text-center"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-4">
           Get started
         </p>
@@ -50,7 +32,7 @@ export function CTA() {
             <ArrowRight className="h-4 w-4" />
           </span>
         </a>
-      </div>
+      </motion.div>
     </section>
   )
 }

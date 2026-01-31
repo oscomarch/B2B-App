@@ -1,11 +1,7 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion } from "framer-motion"
 import { Quote } from "lucide-react"
-
-gsap.registerPlugin(ScrollTrigger)
 
 const tools = ["ConnectWise", "Datto", "IT Glue", "HaloPSA", "NinjaRMM", "Hudu"]
 
@@ -23,31 +19,17 @@ const testimonials = [
 ]
 
 export function SocialProof() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(sectionRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      })
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-5xl mx-auto" ref={sectionRef}>
+    <section className="py-20 px-4 bg-[#FAFAFA]">
+      <motion.div
+        className="max-w-5xl mx-auto"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+      >
         {/* Tools integration bar */}
-        <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap mb-16 pb-12 border-b border-neutral-100">
+        <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap mb-16 pb-12 border-b border-neutral-200">
           <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-400 font-medium">
             Works with
           </span>
@@ -66,14 +48,18 @@ export function SocialProof() {
         {/* Testimonials */}
         <div className="grid md:grid-cols-2 gap-6">
           {testimonials.map((testimonial, index) => (
-            <div
+            <motion.div
               key={index}
-              className="relative rounded-2xl p-6 md:p-8 transition-all duration-300"
+              className="relative rounded-2xl p-6 md:p-8"
               style={{
                 background: index === 0
                   ? "linear-gradient(135deg, rgba(59, 130, 196, 0.06) 0%, rgba(155, 123, 170, 0.04) 100%)"
                   : "linear-gradient(135deg, rgba(155, 123, 170, 0.06) 0%, rgba(197, 168, 130, 0.04) 100%)",
               }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <Quote
                 className="h-5 w-5 mb-4"
@@ -105,10 +91,10 @@ export function SocialProof() {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

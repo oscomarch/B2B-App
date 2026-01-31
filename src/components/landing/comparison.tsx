@@ -1,11 +1,7 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion } from "framer-motion"
 import { Check, X } from "lucide-react"
-
-gsap.registerPlugin(ScrollTrigger)
 
 const oldWay = [
   "Spreadsheets and random docs",
@@ -22,45 +18,33 @@ const relayWay = [
 ]
 
 export function Comparison() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = sectionRef.current?.querySelectorAll(".comparison-card")
-      if (cards) {
-        gsap.from(cards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            once: true,
-          },
-        })
-      }
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section id="vision" className="py-20 px-4" ref={sectionRef}>
+    <section id="vision" className="py-20 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-[26px] md:text-[32px] font-medium text-neutral-900 tracking-[-0.02em] mb-3">
             The old way vs. Relay
           </h2>
           <p className="text-[15px] text-neutral-500">
             Stop chasing. Start tracking.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-5">
           {/* Old way */}
-          <div className="comparison-card p-6 rounded-2xl bg-neutral-50 border border-neutral-200/60 h-full">
+          <motion.div
+            className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/60"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="flex items-center gap-2 mb-5">
               <div className="h-6 w-6 rounded-full bg-neutral-200 flex items-center justify-center">
                 <X className="h-3.5 w-3.5 text-neutral-400" />
@@ -77,14 +61,18 @@ export function Comparison() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Relay way */}
-          <div
-            className="comparison-card p-6 rounded-2xl border border-transparent h-full"
+          <motion.div
+            className="p-6 rounded-2xl border border-transparent"
             style={{
               background: "linear-gradient(135deg, rgba(59, 130, 196, 0.08) 0%, rgba(155, 123, 170, 0.06) 50%, rgba(197, 168, 130, 0.08) 100%)",
             }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             <div className="flex items-center gap-2 mb-5">
               <div
@@ -108,7 +96,7 @@ export function Comparison() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

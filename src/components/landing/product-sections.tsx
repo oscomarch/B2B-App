@@ -1,11 +1,7 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion } from "framer-motion"
 import { Send, FolderOpen, Eye, Download } from "lucide-react"
-
-gsap.registerPlugin(ScrollTrigger)
 
 const features = [
   {
@@ -38,35 +34,39 @@ const features = [
   },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  },
+}
+
 export function ProductSections() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = sectionRef.current?.querySelectorAll(".feature-card")
-      if (cards) {
-        gsap.from(cards, {
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            once: true,
-          },
-        })
-      }
-    })
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section id="features" className="py-24 px-4" ref={sectionRef}>
+    <section id="features" className="py-24 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-14">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-neutral-400 mb-3">
             How it works
           </p>
@@ -76,15 +76,22 @@ export function ProductSections() {
           <p className="text-[15px] text-neutral-500 max-w-lg mx-auto leading-relaxed">
             Replace scattered spreadsheets and email threads with one structured intake flow.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {features.map((feature, index) => {
+        <motion.div
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {features.map((feature) => {
             const Icon = feature.icon
             return (
-              <div
-                key={index}
-                className="feature-card group relative p-6 rounded-2xl border border-neutral-200/60 bg-white hover:bg-white hover:shadow-lg hover:border-neutral-200 hover:-translate-y-1 transition-all duration-300"
+              <motion.div
+                key={feature.step}
+                variants={itemVariants}
+                className="group relative p-6 rounded-2xl border border-neutral-200/60 bg-white hover:bg-white hover:shadow-lg hover:border-neutral-200 hover:-translate-y-1 transition-all duration-300"
               >
                 {/* Step number */}
                 <div className="absolute top-5 right-5 text-[11px] font-semibold text-neutral-300">
@@ -106,10 +113,10 @@ export function ProductSections() {
                 <p className="text-[13px] text-neutral-500 leading-[1.6]">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
