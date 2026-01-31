@@ -27,11 +27,11 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative pt-28 pb-8 px-3 md:px-4">
-      <div className="relative z-10 max-w-[1440px] mx-auto">
+    <section className="relative pt-24 pb-0 px-4 md:px-6 min-h-screen flex flex-col">
+      <div className="relative z-10 max-w-[1320px] mx-auto flex-1 flex flex-col pb-6">
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-[24px] md:rounded-[28px]"
+          className="relative overflow-hidden rounded-[24px] md:rounded-[28px] flex-1"
         >
           {/* Background image */}
           <div className="absolute inset-0">
@@ -45,8 +45,8 @@ export function Hero() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 px-6 py-12 md:px-10 lg:px-14 md:py-14">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-6 items-center">
+          <div className="relative z-10 h-full flex flex-col justify-center px-6 py-10 md:px-10 lg:px-14 md:py-12">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
               {/* Left content */}
               <div ref={leftRef} className="max-w-xl">
                 <p className="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60 mb-4">
