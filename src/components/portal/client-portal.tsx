@@ -106,6 +106,7 @@ export function ClientPortal({ project: initialProject }: ClientPortalProps) {
   const [formData, setFormData] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [uploading, setUploading] = useState<string | null>(null)
 
   // Initialize form data from existing responses
   useEffect(() => {
@@ -290,26 +291,57 @@ export function ClientPortal({ project: initialProject }: ClientPortalProps) {
         )
 
       case "file":
+        const isUploading = uploading === response.id
         return (
           <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center">
             <input
               type="file"
               id={response.id}
               className="hidden"
-              onChange={(e) => {
-                // File upload handling would go here
+              disabled={isUploading}
+              onChange={async (e) => {
                 const file = e.target.files?.[0]
-                if (file) {
-                  handleInputChange(response.id, file.name)
+                if (!file) return
+
+                setUploading(response.id)
+                try {
+                  const formData = new FormData()
+                  formData.append('file', file)
+                  formData.append('projectId', project.id)
+
+                  const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                  })
+
+                  if (!res.ok) throw new Error('Upload failed')
+
+                  const data = await res.json()
+                  handleInputChange(response.id, data.url)
+                } catch (error) {
+                  console.error('Upload error:', error)
+                  alert('Failed to upload file. Please try again.')
+                } finally {
+                  setUploading(null)
                 }
               }}
             />
             <label
               htmlFor={response.id}
-              className="cursor-pointer text-sm text-gray-600"
+              className={cn(
+                "cursor-pointer text-sm",
+                isUploading ? "text-gray-400" : "text-gray-600"
+              )}
             >
-              {value ? (
-                <span className="text-blue-600">{value}</span>
+              {isUploading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Uploading...
+                </span>
+              ) : value ? (
+                <a href={value} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  View uploaded file
+                </a>
               ) : (
                 <>
                   <span className="text-blue-600 hover:underline">Click to upload</span>

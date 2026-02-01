@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { sendPortalInvite } from "@/lib/email"
 
 export async function POST(
   req: Request,
@@ -19,6 +20,9 @@ export async function POST(
         id: params.id,
         organizationId: session.user.organizationId,
       },
+      include: {
+        organization: true,
+      },
     })
 
     if (!project) {
@@ -30,6 +34,27 @@ export async function POST(
         { error: "Project has already been sent" },
         { status: 400 }
       )
+    }
+
+    // Build portal URL
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://getrelay.fr'
+    const portalUrl = `${baseUrl}/onboard/${project.accessToken}`
+
+    // Send email if client email is provided
+    let emailSent = false
+    if (project.clientEmail && process.env.RESEND_API_KEY) {
+      try {
+        await sendPortalInvite({
+          to: project.clientEmail,
+          clientName: project.clientName,
+          mspName: project.organization.name,
+          portalUrl,
+        })
+        emailSent = true
+      } catch (emailError) {
+        console.error("Failed to send email:", emailError)
+        // Continue anyway - we'll still update the status
+      }
     }
 
     // Update project status
@@ -51,14 +76,18 @@ export async function POST(
         userId: session.user.id,
         details: JSON.stringify({
           clientEmail: project.clientEmail,
+          emailSent,
+          portalUrl,
           sentAt: new Date().toISOString(),
         }),
       },
     })
 
-    // TODO: Send email notification to client if email is provided
-
-    return NextResponse.json(updated)
+    return NextResponse.json({
+      ...updated,
+      portalUrl,
+      emailSent,
+    })
   } catch (error) {
     console.error("Error sending project:", error)
     return NextResponse.json(

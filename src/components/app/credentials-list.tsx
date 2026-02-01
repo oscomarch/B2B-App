@@ -7,9 +7,12 @@ import {
   Key,
   CheckCircle,
   Clock,
-  AlertCircle,
   ExternalLink,
   Trash2,
+  Eye,
+  EyeOff,
+  Copy,
+  Check,
 } from "lucide-react"
 
 interface Credential {
@@ -41,11 +44,48 @@ export function CredentialsList({ projectId, credentials }: CredentialsListProps
   const router = useRouter()
   const [showAddForm, setShowAddForm] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [revealedSecrets, setRevealedSecrets] = useState<Record<string, string>>({})
+  const [revealingId, setRevealingId] = useState<string | null>(null)
+  const [copiedId, setCopiedId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     systemName: "",
     systemType: "login",
     notes: "",
   })
+
+  const handleRevealSecret = async (credentialId: string) => {
+    if (revealedSecrets[credentialId]) {
+      // Already revealed, just toggle visibility
+      setRevealedSecrets(prev => {
+        const next = { ...prev }
+        delete next[credentialId]
+        return next
+      })
+      return
+    }
+
+    setRevealingId(credentialId)
+    try {
+      const res = await fetch(`/api/projects/${projectId}/credentials/${credentialId}`)
+      if (!res.ok) throw new Error("Failed to fetch")
+      const data = await res.json()
+      if (data.decryptedSecret) {
+        setRevealedSecrets(prev => ({ ...prev, [credentialId]: data.decryptedSecret }))
+      }
+      router.refresh()
+    } catch (error) {
+      console.error("Error revealing secret:", error)
+      alert("Failed to reveal secret")
+    } finally {
+      setRevealingId(null)
+    }
+  }
+
+  const handleCopy = async (text: string, id: string) => {
+    await navigator.clipboard.writeText(text)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
+  }
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -108,6 +148,8 @@ export function CredentialsList({ projectId, credentials }: CredentialsListProps
         credentials.map((credential) => {
           const config = statusConfig[credential.status as keyof typeof statusConfig] || statusConfig.pending
           const StatusIcon = config.icon
+          const isRevealed = !!revealedSecrets[credential.id]
+          const isRevealing = revealingId === credential.id
 
           return (
             <div key={credential.id} className="p-4 rounded-2xl bg-white border border-neutral-200/60">
@@ -136,7 +178,19 @@ export function CredentialsList({ projectId, credentials }: CredentialsListProps
                   {credential.username && (
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] text-neutral-400">Username</span>
-                      <span className="text-[12px] text-neutral-700 font-mono">{credential.username}</span>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[12px] text-neutral-700 font-mono">{credential.username}</span>
+                        <button
+                          onClick={() => handleCopy(credential.username!, `user-${credential.id}`)}
+                          className="p-1 text-neutral-300 hover:text-neutral-600"
+                        >
+                          {copiedId === `user-${credential.id}` ? (
+                            <Check className="h-3 w-3 text-green-500" />
+                          ) : (
+                            <Copy className="h-3 w-3" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   )}
                   {credential.secureLink && (
@@ -153,15 +207,45 @@ export function CredentialsList({ projectId, credentials }: CredentialsListProps
                     </div>
                   )}
                   {credential.encryptedSecret && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] text-neutral-400">Secret</span>
-                      <span className="text-[12px] text-neutral-700">
-                        {credential.secretViewed ? (
-                          <span className="text-neutral-400">Already viewed</span>
-                        ) : (
-                          <span className="text-green-600">Available</span>
-                        )}
-                      </span>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] text-neutral-400">One-time Secret</span>
+                        <button
+                          onClick={() => handleRevealSecret(credential.id)}
+                          disabled={isRevealing}
+                          className="flex items-center gap-1 text-[12px] text-[#3B82C4] hover:text-[#2d6ba0] disabled:opacity-50"
+                        >
+                          {isRevealing ? (
+                            "Loading..."
+                          ) : isRevealed ? (
+                            <>Hide <EyeOff className="h-3 w-3" /></>
+                          ) : (
+                            <>Reveal <Eye className="h-3 w-3" /></>
+                          )}
+                        </button>
+                      </div>
+                      {isRevealed && revealedSecrets[credential.id] && (
+                        <div className="p-3 bg-amber-50 border border-amber-200/60 rounded-lg">
+                          <div className="flex items-center justify-between gap-2">
+                            <code className="text-[12px] text-amber-900 font-mono break-all flex-1">
+                              {revealedSecrets[credential.id]}
+                            </code>
+                            <button
+                              onClick={() => handleCopy(revealedSecrets[credential.id], `secret-${credential.id}`)}
+                              className="p-1.5 rounded bg-amber-100 text-amber-700 hover:bg-amber-200 flex-shrink-0"
+                            >
+                              {copiedId === `secret-${credential.id}` ? (
+                                <Check className="h-3.5 w-3.5 text-green-600" />
+                              ) : (
+                                <Copy className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          </div>
+                          <p className="text-[10px] text-amber-600 mt-2">
+                            {credential.secretViewed ? "Previously viewed" : "First time viewing - now marked as viewed"}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                   {credential.notes && (
