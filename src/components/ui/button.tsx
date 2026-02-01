@@ -23,6 +23,8 @@ const buttonVariants = cva(
           "text-neutral-900 underline-offset-4 hover:underline",
         coral:
           "bg-gradient-to-r from-coral to-pink-soft text-white rounded-xl hover:scale-[1.02] hover:shadow-soft",
+        gradient:
+          "text-white rounded-xl hover:scale-[1.02] hover:shadow-soft [background:linear-gradient(135deg,#3B82C4_0%,#9B7BAA_50%,#C5A882_100%)]",
       },
       size: {
         default: "h-11 px-6 py-3",

@@ -4,9 +4,6 @@ import { useState, Suspense } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { ArrowRight } from "lucide-react"
 
 function LoginForm() {
@@ -33,7 +30,7 @@ function LoginForm() {
       if (result?.error) {
         setError("Invalid email or password")
       } else {
-        router.push("/dashboard")
+        router.push("/app/projects")
         router.refresh()
       }
     } catch {
@@ -48,7 +45,10 @@ function LoginForm() {
       {/* Logo */}
       <div className="text-center mb-10">
         <Link href="/" className="inline-flex items-center gap-3 mb-8">
-          <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
+          <div
+            className="h-11 w-11 rounded-xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+          >
             <span className="text-xl font-semibold text-white">R</span>
           </div>
           <span className="text-2xl font-medium text-neutral-900">Relay</span>
@@ -62,60 +62,65 @@ function LoginForm() {
       </div>
 
       {/* Form Card */}
-      <div className="card-elevated p-8">
+      <div className="bg-white rounded-2xl border border-neutral-200/60 p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
           {registered && (
-            <div className="p-4 text-sm text-green-soft bg-green-soft/10 rounded-xl">
+            <div className="p-4 text-sm text-green-700 bg-green-50 rounded-xl border border-green-200/60">
               Account created successfully! Please sign in.
             </div>
           )}
           {error && (
-            <div className="p-4 text-sm text-coral-dark bg-coral/10 rounded-xl">
+            <div className="p-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200/60">
               {error}
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-neutral-700">
+            <label htmlFor="email" className="block text-[13px] font-medium text-neutral-700">
               Email
-            </Label>
-            <Input
+            </label>
+            <input
               id="email"
               type="email"
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+              className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium text-neutral-700">
+            <label htmlFor="password" className="block text-[13px] font-medium text-neutral-700">
               Password
-            </Label>
-            <Input
+            </label>
+            <input
               id="password"
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+              className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
             />
           </div>
 
-          <Button type="submit" className="w-full h-12 gap-2" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full h-12 rounded-xl text-[15px] font-medium text-white flex items-center justify-center gap-2 transition-all hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100"
+            style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+          >
             {loading ? "Signing in..." : "Sign in"}
             {!loading && <ArrowRight className="h-4 w-4" />}
-          </Button>
+          </button>
         </form>
       </div>
 
       {/* Footer */}
       <p className="text-center mt-8 text-sm text-neutral-500">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-coral hover:text-coral-dark font-medium transition-colors">
+        <Link href="/register" className="text-[#3B82C4] hover:text-[#2d6ba0] font-medium transition-colors">
           Create one
         </Link>
       </p>
@@ -128,7 +133,10 @@ function LoadingState() {
     <div className="w-full max-w-md">
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-3 mb-8">
-          <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
+          <div
+            className="h-11 w-11 rounded-xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+          >
             <span className="text-xl font-semibold text-white">R</span>
           </div>
           <span className="text-2xl font-medium text-neutral-900">Relay</span>
@@ -138,7 +146,7 @@ function LoadingState() {
         </h1>
         <p className="text-neutral-500">Loading...</p>
       </div>
-      <div className="card-elevated p-8 animate-pulse">
+      <div className="bg-white rounded-2xl border border-neutral-200/60 p-8 animate-pulse">
         <div className="space-y-6">
           <div className="h-12 bg-neutral-100 rounded-xl" />
           <div className="h-12 bg-neutral-100 rounded-xl" />
@@ -151,7 +159,7 @@ function LoadingState() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream px-6 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-6 py-12">
       <Suspense fallback={<LoadingState />}>
         <LoginForm />
       </Suspense>

@@ -3,9 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { ArrowRight } from "lucide-react"
 
 export default function RegisterPage() {
@@ -67,12 +64,15 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream px-6 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-6 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex items-center gap-3 mb-8">
-            <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-coral to-pink-soft flex items-center justify-center">
+            <div
+              className="h-11 w-11 rounded-xl flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+            >
               <span className="text-xl font-semibold text-white">R</span>
             </div>
             <span className="text-2xl font-medium text-neutral-900">Relay</span>
@@ -86,49 +86,49 @@ export default function RegisterPage() {
         </div>
 
         {/* Form Card */}
-        <div className="card-elevated p-8">
+        <div className="bg-white rounded-2xl border border-neutral-200/60 p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="p-4 text-sm text-coral-dark bg-coral/10 rounded-xl">
+              <div className="p-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200/60">
                 {error}
               </div>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="organizationName" className="text-sm font-medium text-neutral-700">
+              <label htmlFor="organizationName" className="block text-[13px] font-medium text-neutral-700">
                 Company name
-              </Label>
-              <Input
+              </label>
+              <input
                 id="organizationName"
                 name="organizationName"
                 placeholder="Acme MSP"
                 value={formData.organizationName}
                 onChange={handleChange}
                 required
-                className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+                className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm font-medium text-neutral-700">
+              <label htmlFor="name" className="block text-[13px] font-medium text-neutral-700">
                 Your name
-              </Label>
-              <Input
+              </label>
+              <input
                 id="name"
                 name="name"
                 placeholder="John Smith"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+                className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-neutral-700">
+              <label htmlFor="email" className="block text-[13px] font-medium text-neutral-700">
                 Email
-              </Label>
-              <Input
+              </label>
+              <input
                 id="email"
                 name="email"
                 type="email"
@@ -136,16 +136,16 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+                className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-neutral-700">
+                <label htmlFor="password" className="block text-[13px] font-medium text-neutral-700">
                   Password
-                </Label>
-                <Input
+                </label>
+                <input
                   id="password"
                   name="password"
                   type="password"
@@ -153,15 +153,15 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium text-neutral-700">
+                <label htmlFor="confirmPassword" className="block text-[13px] font-medium text-neutral-700">
                   Confirm
-                </Label>
-                <Input
+                </label>
+                <input
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
@@ -169,22 +169,27 @@ export default function RegisterPage() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="h-12 rounded-xl border-neutral-200/60 bg-neutral-50/50 focus:bg-white focus:border-coral/50 focus:ring-coral/20"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3B82C4]/20 focus:border-[#3B82C4] transition-colors"
                 />
               </div>
             </div>
 
-            <Button type="submit" className="w-full h-12 gap-2 mt-2" disabled={loading}>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-12 rounded-xl text-[15px] font-medium text-white flex items-center justify-center gap-2 transition-all hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 mt-2"
+              style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
+            >
               {loading ? "Creating account..." : "Create account"}
               {!loading && <ArrowRight className="h-4 w-4" />}
-            </Button>
+            </button>
           </form>
         </div>
 
         {/* Footer */}
         <p className="text-center mt-8 text-sm text-neutral-500">
           Already have an account?{" "}
-          <Link href="/login" className="text-coral hover:text-coral-dark font-medium transition-colors">
+          <Link href="/login" className="text-[#3B82C4] hover:text-[#2d6ba0] font-medium transition-colors">
             Sign in
           </Link>
         </p>
