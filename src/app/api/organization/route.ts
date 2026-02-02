@@ -40,12 +40,13 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { name, logo, primaryColor } = await req.json()
+    const { name, logo, primaryColor, slug } = await req.json()
 
     const updateData: any = {}
     if (name) updateData.name = name
     if (logo !== undefined) updateData.logo = logo
     if (primaryColor) updateData.primaryColor = primaryColor
+    if (slug) updateData.slug = slug
 
     const organization = await prisma.organization.update({
       where: { id: session.user.organizationId },
