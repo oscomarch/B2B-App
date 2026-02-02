@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Send, Mail, Eye, Edit3 } from "lucide-react"
+import { X, Send, Mail, Eye, Edit3, CheckCircle } from "lucide-react"
 
 interface SendEmailDialogProps {
   isOpen: boolean
@@ -26,20 +26,60 @@ export function SendEmailDialog({
 }: SendEmailDialogProps) {
   const [customMessage, setCustomMessage] = useState("")
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [view, setView] = useState<"edit" | "preview">("edit")
 
   if (!isOpen) return null
 
   const handleSend = async () => {
     setLoading(true)
+    setError(null)
     try {
       await onSend(customMessage || undefined)
-      onClose()
-    } catch (error) {
-      console.error("Failed to send:", error)
+      setSuccess(true)
+      // Auto-close after showing success
+      setTimeout(() => {
+        setSuccess(false)
+        setCustomMessage("")
+        onClose()
+      }, 2000)
+    } catch (err) {
+      console.error("Failed to send:", err)
+      setError(err instanceof Error ? err.message : "Failed to send email")
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleClose = () => {
+    setSuccess(false)
+    setError(null)
+    setCustomMessage("")
+    onClose()
+  }
+
+  // Success state
+  if (success) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+        <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl mx-4 overflow-hidden">
+          <div className="p-8 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-[18px] font-semibold text-neutral-900 mb-2">
+              Email Sent!
+            </h3>
+            <p className="text-[14px] text-neutral-500">
+              The onboarding link has been sent to<br />
+              <span className="font-medium text-neutral-700">{clientEmail}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -47,7 +87,7 @@ export function SendEmailDialog({
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={handleClose}
       />
 
       {/* Dialog */}
@@ -63,7 +103,7 @@ export function SendEmailDialog({
             </p>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 rounded-xl text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 transition-colors"
           >
             <X className="h-5 w-5" />
@@ -191,10 +231,17 @@ export function SendEmailDialog({
           )}
         </div>
 
+        {/* Error message */}
+        {error && (
+          <div className="mx-6 mb-4 p-3 rounded-xl bg-red-50 border border-red-200">
+            <p className="text-[13px] text-red-700">{error}</p>
+          </div>
+        )}
+
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-neutral-100 bg-neutral-50">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="px-4 py-2 rounded-xl text-[13px] font-medium text-neutral-700 hover:bg-neutral-200 transition-colors"
           >
             Cancel

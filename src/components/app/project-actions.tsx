@@ -10,8 +10,11 @@ import {
   RefreshCw,
   Mail,
   Download,
+  History,
+  CheckCircle,
 } from "lucide-react"
 import { SendEmailDialog } from "./send-email-dialog"
+import { EmailHistory } from "./email-history"
 
 interface Project {
   id: string
@@ -31,6 +34,7 @@ export function ProjectActions({ project, portalUrl, mspName }: ProjectActionsPr
   const [loading, setLoading] = useState<string | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [showEmailDialog, setShowEmailDialog] = useState(false)
+  const [showEmailHistory, setShowEmailHistory] = useState(false)
 
   const handleSendPortal = async (customMessage?: string) => {
     if (!project.clientEmail) {
@@ -119,14 +123,27 @@ export function ProjectActions({ project, portalUrl, mspName }: ProjectActionsPr
       )}
 
       {(project.status === "sent" || project.status === "in_progress") && (
-        <button
-          onClick={openEmailDialog}
-          disabled={loading === "send"}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-50 transition-colors disabled:opacity-50"
-        >
-          <Mail className="h-4 w-4" />
-          {loading === "send" ? "Sending..." : "Resend Link"}
-        </button>
+        <>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <span className="text-[12px] font-medium text-green-700">Email sent</span>
+          </div>
+          <button
+            onClick={() => setShowEmailHistory(true)}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] font-medium text-neutral-600 hover:bg-neutral-100 transition-colors"
+            title="View email history"
+          >
+            <History className="h-4 w-4" />
+          </button>
+          <button
+            onClick={openEmailDialog}
+            disabled={loading === "send"}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-50 transition-colors disabled:opacity-50"
+          >
+            <Mail className="h-4 w-4" />
+            {loading === "send" ? "Sending..." : "Resend Link"}
+          </button>
+        </>
       )}
 
       <div className="relative">
@@ -200,6 +217,14 @@ export function ProjectActions({ project, portalUrl, mspName }: ProjectActionsPr
       mspName={mspName}
       portalUrl={portalUrl}
       isResend={project.status !== "draft"}
+    />
+
+    {/* Email History */}
+    <EmailHistory
+      isOpen={showEmailHistory}
+      onClose={() => setShowEmailHistory(false)}
+      projectId={project.id}
+      clientName={project.clientName}
     />
     </>
   )
