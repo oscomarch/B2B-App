@@ -15,6 +15,7 @@ interface SendPortalInviteParams {
   clientName: string
   mspName: string
   portalUrl: string
+  customMessage?: string
 }
 
 export async function sendPortalInvite({
@@ -22,12 +23,24 @@ export async function sendPortalInvite({
   clientName,
   mspName,
   portalUrl,
+  customMessage,
 }: SendPortalInviteParams) {
   const client = getResend()
 
   if (!client) {
     throw new Error('Email service not configured. Set RESEND_API_KEY.')
   }
+
+  // Build the custom message HTML if provided
+  const customMessageHtml = customMessage
+    ? `
+      <div style="margin: 24px 0; padding: 16px; background-color: #F0F7FF; border-radius: 12px; border-left: 4px solid #3B82C4;">
+        <p style="margin: 0; font-size: 14px; color: #1A1A1A; line-height: 1.6; font-style: italic;">
+          "${customMessage}"
+        </p>
+      </div>
+    `
+    : ''
 
   const { data, error } = await client.emails.send({
     from: process.env.RESEND_FROM_EMAIL || 'Relay <onboarding@resend.dev>',
@@ -57,6 +70,8 @@ export async function sendPortalInvite({
               <p style="margin: 0 0 24px 0; font-size: 15px; color: #6B6B6B; line-height: 1.6;">
                 <strong>${mspName}</strong> is ready to onboard you. Please complete the secure form to get started.
               </p>
+
+              ${customMessageHtml}
 
               <!-- CTA Button -->
               <div style="text-align: center; margin: 32px 0;">

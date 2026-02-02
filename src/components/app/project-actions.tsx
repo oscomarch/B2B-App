@@ -11,6 +11,7 @@ import {
   Mail,
   Download,
 } from "lucide-react"
+import { SendEmailDialog } from "./send-email-dialog"
 
 interface Project {
   id: string
@@ -22,14 +23,16 @@ interface Project {
 interface ProjectActionsProps {
   project: Project
   portalUrl: string
+  mspName: string
 }
 
-export function ProjectActions({ project, portalUrl }: ProjectActionsProps) {
+export function ProjectActions({ project, portalUrl, mspName }: ProjectActionsProps) {
   const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
   const [showMenu, setShowMenu] = useState(false)
+  const [showEmailDialog, setShowEmailDialog] = useState(false)
 
-  const handleSendPortal = async () => {
+  const handleSendPortal = async (customMessage?: string) => {
     if (!project.clientEmail) {
       alert("Please add a client email address first")
       return
@@ -38,15 +41,28 @@ export function ProjectActions({ project, portalUrl }: ProjectActionsProps) {
     try {
       const res = await fetch(`/api/projects/${project.id}/send`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customMessage }),
       })
-      if (!res.ok) throw new Error("Failed to send")
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || "Failed to send")
+      }
       router.refresh()
     } catch (error) {
       console.error("Error sending portal:", error)
-      alert("Failed to send portal link")
+      throw error // Re-throw so dialog can handle it
     } finally {
       setLoading(null)
     }
+  }
+
+  const openEmailDialog = () => {
+    if (!project.clientEmail) {
+      alert("Please add a client email address first")
+      return
+    }
+    setShowEmailDialog(true)
   }
 
   const handleStatusChange = async (status: string) => {
@@ -88,10 +104,11 @@ export function ProjectActions({ project, portalUrl }: ProjectActionsProps) {
   }
 
   return (
+    <>
     <div className="flex items-center gap-2">
       {project.status === "draft" && (
         <button
-          onClick={handleSendPortal}
+          onClick={openEmailDialog}
           disabled={loading === "send"}
           className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium text-white transition-all hover:shadow-lg disabled:opacity-50"
           style={{ background: "linear-gradient(135deg, #3B82C4 0%, #9B7BAA 50%, #C5A882 100%)" }}
@@ -101,9 +118,9 @@ export function ProjectActions({ project, portalUrl }: ProjectActionsProps) {
         </button>
       )}
 
-      {project.status === "sent" && (
+      {(project.status === "sent" || project.status === "in_progress") && (
         <button
-          onClick={handleSendPortal}
+          onClick={openEmailDialog}
           disabled={loading === "send"}
           className="flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-medium text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-50 transition-colors disabled:opacity-50"
         >
@@ -172,5 +189,18 @@ export function ProjectActions({ project, portalUrl }: ProjectActionsProps) {
         )}
       </div>
     </div>
+
+    {/* Email Dialog */}
+    <SendEmailDialog
+      isOpen={showEmailDialog}
+      onClose={() => setShowEmailDialog(false)}
+      onSend={handleSendPortal}
+      clientName={project.clientName}
+      clientEmail={project.clientEmail || ""}
+      mspName={mspName}
+      portalUrl={portalUrl}
+      isResend={project.status !== "draft"}
+    />
+    </>
   )
 }

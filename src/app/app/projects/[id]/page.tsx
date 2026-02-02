@@ -73,6 +73,9 @@ async function getProject(id: string, organizationId: string) {
     where: { id, organizationId },
     include: {
       template: true,
+      organization: {
+        select: { name: true },
+      },
       sections: {
         orderBy: { order: "asc" },
         include: {
@@ -168,7 +171,7 @@ export default async function ProjectDetailPage({
             </p>
           </div>
         </div>
-        <ProjectActions project={project} portalUrl={portalUrl} />
+        <ProjectActions project={project} portalUrl={portalUrl} mspName={project.organization.name} />
       </div>
 
       {/* Progress Overview */}
