@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
         token.role = user.role
@@ -55,11 +55,18 @@ export const authOptions: NextAuthOptions = {
         token.organizationName = user.organizationName
         token.organizationSlug = user.organizationSlug
       }
+      // Handle session updates (e.g., when user updates their name)
+      if (trigger === "update" && session) {
+        if (session.name) {
+          token.name = session.name
+        }
+      }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
+        session.user.name = token.name as string
         session.user.role = token.role as string
         session.user.organizationId = token.organizationId as string
         session.user.organizationName = token.organizationName as string

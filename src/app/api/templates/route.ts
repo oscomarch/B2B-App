@@ -37,14 +37,40 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { name, description, type } = await req.json()
+    const { name, description, type, isDefault, sections } = await req.json()
+
+    // If this is set as default, unset other defaults
+    if (isDefault) {
+      await prisma.onboardingTemplate.updateMany({
+        where: {
+          organizationId: session.user.organizationId,
+          isDefault: true,
+        },
+        data: { isDefault: false },
+      })
+    }
 
     const template = await prisma.onboardingTemplate.create({
       data: {
         name,
         description,
         type: type || "new_client",
+        isDefault: isDefault || false,
         organizationId: session.user.organizationId,
+        sections: sections
+          ? {
+              create: sections.map((section: { name: string; description?: string; icon?: string; order: number; isRequired?: boolean }) => ({
+                name: section.name,
+                description: section.description || null,
+                icon: section.icon || "folder",
+                order: section.order,
+                isRequired: section.isRequired !== false,
+              })),
+            }
+          : undefined,
+      },
+      include: {
+        sections: true,
       },
     })
 
