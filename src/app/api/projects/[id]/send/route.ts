@@ -36,9 +36,10 @@ export async function POST(
       )
     }
 
-    // Build portal URL
-    const baseUrl = process.env.NEXTAUTH_URL || 'https://getrelay.fr'
-    const portalUrl = `${baseUrl}/onboard/${project.accessToken}`
+    // Build portal URL from request headers
+    const host = req.headers.get('host') || 'getrelay.fr'
+    const protocol = host.includes('localhost') ? 'http' : 'https'
+    const portalUrl = `${protocol}://${host}/onboard/${project.accessToken}`
 
     // Send email if client email is provided
     let emailSent = false

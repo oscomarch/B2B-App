@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import { headers } from "next/headers"
 import {
   ArrowLeft,
   ExternalLink,
@@ -112,7 +113,12 @@ export default async function ProjectDetailPage({
   if (!project) notFound()
 
   const config = statusConfig[project.status as keyof typeof statusConfig]
-  const portalUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/onboard/${project.accessToken}`
+
+  // Get the host from headers for correct portal URL
+  const headersList = await headers()
+  const host = headersList.get('host') || 'getrelay.fr'
+  const protocol = host.includes('localhost') ? 'http' : 'https'
+  const portalUrl = `${protocol}://${host}/onboard/${project.accessToken}`
 
   // Calculate section completion
   const completedSections = project.sections.filter(s => s.status === "completed" || s.status === "not_applicable").length
